@@ -1,10 +1,8 @@
 // app/page.tsx
 "use client";
 import React, { useState } from "react";
-import CrearVuelo from "./CrearVuelo";
 import EliminarVuelo from "./EliminarVuelo";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarShortcut, MenubarTrigger } from "@/components/ui/menubar";
-
 
 export default function MainPage() {
   const [activeComponent, setActiveComponent] = useState<string | null>(null);
@@ -16,18 +14,25 @@ export default function MainPage() {
 
   return (
     <div className="container">
-      <div className="enorme">Bienvenido</div>
+      <div className="elegantshadow">
+        <div className="enorme">Bienvenido</div>
+      </div>
+
       <title>PRUEBA 1</title>
 
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger>Gestion de vuelos</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem onClick={() => handleMenuClick('crear')}>
-              <MenubarShortcut>Crear vuelo</MenubarShortcut>
+            <MenubarItem>
+              <a href= "./CrearVuelo" target="_blank" rel="noopener noreferrer">
+                <MenubarShortcut>Crear vuelo</MenubarShortcut>
+              </a>
             </MenubarItem>
-            <MenubarItem onClick={() => handleMenuClick('eliminar')}>
-              <MenubarShortcut>Eliminar vuelo</MenubarShortcut>
+            <MenubarItem>
+              <a href="./EliminarVuelo" target="_blank" rel="noopener noreferrer">
+                <MenubarShortcut>Eliminar vuelo</MenubarShortcut>
+              </a>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -54,12 +59,7 @@ export default function MainPage() {
         </MenubarMenu>
       </Menubar>
 
-      <div className="content">
-        {/* Renderiza el componente basado en el estado activeComponent */}
-        {activeComponent === 'crear' && <CrearVuelo />}
-        {activeComponent === 'eliminar' && <EliminarVuelo />}
-        {/* Agrega más componentes aquí según sea necesario */}
-      </div>
+
     </div>
   );
 }
