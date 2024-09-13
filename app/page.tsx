@@ -1,87 +1,65 @@
 // app/page.tsx
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Menubar,
-  MenubarCheckboxItem,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from "@/components/ui/menubar"
+"use client";
+import React, { useState } from "react";
+import CrearVuelo from "./CrearVuelo";
+import EliminarVuelo from "./EliminarVuelo";
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarShortcut, MenubarTrigger } from "@/components/ui/menubar";
+
 
 export default function MainPage() {
+  const [activeComponent, setActiveComponent] = useState<string | null>(null);
+
+  // Función para manejar el clic en los ítems del menú
+  const handleMenuClick = (component: string) => {
+    setActiveComponent(component);
+  };
+
   return (
     <div className="container">
-      <div className="text-section">
-        <h1 className="enorme elegantshadow">Bienvenido</h1> {/* Cambia 'elegantshadow' por 'deepshadow' o 'insetshadow' según prefieras */}
-      </div>
-      
+      <div className="enorme">Bienvenido</div>
+      <title>PRUEBA 1</title>
+
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarTrigger>Gestion de vuelos</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>
-              New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+            <MenubarItem onClick={() => handleMenuClick('crear')}>
+              <MenubarShortcut>Crear vuelo</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem onClick={() => handleMenuClick('eliminar')}>
+              <MenubarShortcut>Eliminar vuelo</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
 
         <MenubarMenu>
-          <MenubarTrigger>Edit</MenubarTrigger>
+          <MenubarTrigger>Reservas</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
-              Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+              <MenubarShortcut>Nueva reserva</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+              <MenubarShortcut>Eliminar reserva</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
 
         <MenubarMenu>
-          <MenubarTrigger>View</MenubarTrigger>
+          <MenubarTrigger>Ver vuelos</MenubarTrigger>
           <MenubarContent>
-            <MenubarCheckboxItem>Always Show Bookmarks Bar</MenubarCheckboxItem>
+            <MenubarItem>
+              <MenubarShortcut>Ver vuelos</MenubarShortcut>
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
       </Menubar>
+
+      <div className="content">
+        {/* Renderiza el componente basado en el estado activeComponent */}
+        {activeComponent === 'crear' && <CrearVuelo />}
+        {activeComponent === 'eliminar' && <EliminarVuelo />}
+        {/* Agrega más componentes aquí según sea necesario */}
+      </div>
     </div>
   );
 }
