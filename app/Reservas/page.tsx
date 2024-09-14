@@ -24,6 +24,7 @@ const CrearPersona = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Control del menú desplegable
 
   // Cargar personas cuando se monta el componente
   useEffect(() => {
@@ -40,10 +41,10 @@ const CrearPersona = () => {
     fetchPersonas();
   }, []);
 
-  // Filtrar personas por el nombre
+  // Filtrar personas por el pasaporte
   useEffect(() => {
     const filtered = personas.filter((persona) =>
-      persona.firstName.toLowerCase().includes(filter.toLowerCase())
+      persona.passportId.toLowerCase().includes(filter.toLowerCase())
     );
     setFilteredPersonas(filtered);
     setCurrentPage(1); // Reiniciar paginación cuando se filtra
@@ -63,89 +64,106 @@ const CrearPersona = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-    // Tipo específico para las claves de visibleColumns
-    type ColumnKey = keyof typeof visibleColumns;
-    
   // Cambiar visibilidad de columnas
+  type ColumnKey = keyof typeof visibleColumns;
   const toggleColumnVisibility = (column: ColumnKey) => {
     setVisibleColumns((prev) => ({ ...prev, [column]: !prev[column] }));
   };
 
   return (
-    <div className="CrearPersona">
-      <h2>Lista de Personas</h2> {/* Título encima de la tabla */}
-      {error ? (
-        <p>{error}</p>
-      ) : (
-        <div>
-          {/* Filtro de búsqueda */}
-          <input
-            type="text"
-            placeholder="Filter first names..."
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="filter-input"
-          />
+    <div className="page-container">
+      {/* Sección izquierda que contiene la tabla y filtros */}
+      <div className="left-section">
+        <h2>Lista de Personas</h2> {/* Título encima de la tabla */}
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          <div>
+            {/* Filtro de búsqueda y Toggle de columnas en la misma fila */}
+            <div className="filter-row">
+              <input
+                type="text"
+                placeholder="Filtrar por pasaporte..."
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="filter-input"
+              />
 
-          {/* Selector de columnas */}
-          <div className="column-toggle">
-            <button onClick={() => toggleColumnVisibility("passportId")}>
-              Toggle Passport ID
-            </button>
-            <button onClick={() => toggleColumnVisibility("firstName")}>
-              Toggle First Name
-            </button>
-            <button onClick={() => toggleColumnVisibility("lastName")}>
-              Toggle Last Name
-            </button>
-          </div>
-
-          {/* Tabla */}
-          <div className="table-container">
-            <Table className="dark-table">
-              <TableHeader>
-                <TableRow>
-                  <TableHead></TableHead> {/* Columna para las checkboxes */}
-                  {visibleColumns.passportId && <TableHead>Passport ID</TableHead>}
-                  {visibleColumns.firstName && <TableHead>First Name</TableHead>}
-                  {visibleColumns.lastName && <TableHead>Last Name</TableHead>}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {currentItems.length > 0 ? (
-                  currentItems.map((persona) => (
-                    <TableRow key={persona.passportId}>
-                      <TableCell>
-                        <input type="checkbox" /> {/* Checkbox en cada fila */}
-                      </TableCell>
-                      {visibleColumns.passportId && <TableCell>{persona.passportId}</TableCell>}
-                      {visibleColumns.firstName && <TableCell>{persona.firstName}</TableCell>}
-                      {visibleColumns.lastName && <TableCell>{persona.lastName}</TableCell>}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4}>No hay personas disponibles</TableCell>
-                  </TableRow>
+              {/* Dropdown Toggle Columnas */}
+              <div className="dropdown">
+                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="dropdown-toggle">
+                  Columnas
+                </button>
+                {dropdownOpen && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button onClick={() => toggleColumnVisibility("passportId")}>
+                        Toggle Passport ID
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => toggleColumnVisibility("firstName")}>
+                        Toggle First Name
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => toggleColumnVisibility("lastName")}>
+                        Toggle Last Name
+                      </button>
+                    </li>
+                  </ul>
                 )}
-              </TableBody>
-            </Table>
-          </div>
+              </div>
+            </div>
 
-          {/* Paginación */}
-          <div className="pagination">
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              Previous
-            </button>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-              Next
-            </button>
+            {/* Tabla con anchura limitada */}
+            <div className="table-container">
+              <Table className="dark-table">
+                <TableHeader>
+                  <TableRow>
+                    {visibleColumns.passportId && <TableHead>Passport ID</TableHead>}
+                    {visibleColumns.firstName && <TableHead>First Name</TableHead>}
+                    {visibleColumns.lastName && <TableHead>Last Name</TableHead>}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentItems.length > 0 ? (
+                    currentItems.map((persona) => (
+                      <TableRow key={persona.passportId}>
+                        {visibleColumns.passportId && <TableCell>{persona.passportId}</TableCell>}
+                        {visibleColumns.firstName && <TableCell>{persona.firstName}</TableCell>}
+                        {visibleColumns.lastName && <TableCell>{persona.lastName}</TableCell>}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={3}>No hay personas disponibles</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Paginación */}
+            <div className="pagination">
+              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Previous
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                Next
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* Sección derecha vacía o para otros elementos */}
+      <div className="right-section">
+        <p>Otros elementos de la página</p>
+      </div>
     </div>
   );
 };

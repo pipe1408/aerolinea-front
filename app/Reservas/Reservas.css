@@ -1,74 +1,95 @@
-.CrearPersona {
-  color: white;
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.filter-input {
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid #333;
-  background-color: #2b2b2b;
-  color: white;
-}
-
-.column-toggle {
-  margin-bottom: 10px;
+/* Contenedor principal que divide la página en dos */
+.page-container {
   display: flex;
-  gap: 10px;
+  height: 100vh; /* Altura completa de la pantalla */
 }
 
-.column-toggle button {
-  background-color: #333;
+.left-section {
+  width: 40%; /* Ocupa el 40% del ancho de la pantalla, ajustable */
+  padding: 20px;
+  border-right: 2px solid #fff; /* Línea divisoria a la derecha */
+  background-color: #000000;
+}
+
+.right-section {
+  width: 60%; /* Espacio vacío o para otros elementos */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.column-toggle button:hover {
-  background-color: #555;
 }
 
 .table-container {
-  margin-top: 10px;
-  border: 1px solid #333;
-  border-radius: 10px;
-  overflow: hidden;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 20px; /* Evitar que el dropdown interfiera */
 }
 
 .dark-table {
-  width: 100%;
+  width: 100%; /* Tabla ocupa todo el ancho disponible */
   border-collapse: collapse;
 }
 
-.dark-table th, .dark-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #333;
-}
-
-.dark-table th {
-  background-color: #2b2b2b;
-  color: #fff;
-}
-
+.dark-table th,
 .dark-table td {
-  background-color: #1e1e1e;
-  color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
 }
 
-.dark-table tr:hover {
+.filter-row {
+  display: flex;
+  justify-content: space-between; /* Filtros y dropdown en la misma fila */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-input {
+  padding: 10px;
+  border: 1px solid #000000;
+  width: 60%;
+  color: black; /* Color del texto en el input de filtro */
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  padding: 10px;
   background-color: #333;
+  color: white; /* Texto blanco para el botón del dropdown */
+  border: 1px solid #131212;
+  cursor: pointer;
 }
 
-input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Aparece justo debajo del botón */
+  left: 0;
+  z-index: 10; /* Se superpone a la tabla */
+  background-color: #000000; /* Fondo negro para el dropdown */
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 150px;
+  list-style: none;
+  color: white; /* Texto blanco para el dropdown */
+}
+
+.dropdown-menu li {
+  margin-bottom: 10px;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: white; /* Color del texto en los botones del dropdown */
+  padding: 5px;
+  width: 100%;
+  font-size: 14px;
 }
 
 .pagination {
@@ -78,18 +99,38 @@ input[type="checkbox"] {
 }
 
 .pagination button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
   background-color: #333;
   color: white;
-  border: none;
-  padding: 5px 10px;
   cursor: pointer;
-  border-radius: 5px;
 }
 
-.pagination button:hover {
+.pagination button:disabled {
   background-color: #555;
+  cursor: not-allowed;
 }
 
 .pagination span {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+/* Estilo para el contenido del lado derecho */
+.right-section p {
+  font-size: 20px;
+  color: #999;
+  text-align: center;
+}
+
+/* Estilos de tabla para colores oscuros */
+.dark-table th {
+  background-color: #444;
+  color: white;
+}
+
+.dark-table td {
+  background-color: #222;
   color: white;
 }
