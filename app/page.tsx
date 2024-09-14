@@ -5,7 +5,8 @@ export default function MainPage() {
   return (
     <div className="container">
       <div className="elegantshadow">
-        <div className="enorme">Bienvenido</div>
+        <div className="enorme">Bienvenido
+        </div>
       </div>
 
       <Menubar>
@@ -13,13 +14,8 @@ export default function MainPage() {
           <MenubarTrigger>Gestion de vuelos</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
-              <Link href="/CrearVuelo" passHref>
+              <Link href="/Vuelos" passHref>
                 <MenubarShortcut>Crear vuelo</MenubarShortcut>
-              </Link>
-            </MenubarItem>
-            <MenubarItem>
-              <Link href="/EliminarVuelo" passHref>
-                <MenubarShortcut>Eliminar vuelo</MenubarShortcut>
               </Link>
             </MenubarItem>
           </MenubarContent>
@@ -27,16 +23,11 @@ export default function MainPage() {
 
         <MenubarMenu>
           <MenubarTrigger>Reservas</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>
-              <Link href="/NuevaReserva" passHref>
-                <MenubarShortcut>Nueva reserva</MenubarShortcut>
-              </Link>
-            </MenubarItem>
-            <MenubarItem>
-              <Link href="/EliminarReserva" passHref>
-                <MenubarShortcut>Eliminar reserva</MenubarShortcut>
-              </Link>
+            <MenubarContent>
+              <MenubarItem>
+                <Link href="/Reservas" passHref>
+                  <MenubarShortcut>Nueva reserva</MenubarShortcut>
+                </Link>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>

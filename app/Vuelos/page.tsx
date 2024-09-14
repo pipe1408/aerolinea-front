@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import "./CrearVuelo.css"; // Ajusta la ruta según tu estructura de proyecto
+import "./Vuelo.css"; // Ajusta la ruta según tu estructura de proyecto
 
 const CrearVuelo = () => {
   return (
