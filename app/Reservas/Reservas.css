@@ -1,8 +1,95 @@
-/* app/crear-vuelo/CrearVuelo.css */
-.CrearReserva {
-    background-color: black; /* Fondo negro */
-    color: white; /* Texto blanco */
-    padding: 20px;
-    min-height: 100vh; /* Asegura que ocupe toda la pantalla */
-  }
-  
+.CrearPersona {
+  color: white;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.filter-input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: #2b2b2b;
+  color: white;
+}
+
+.column-toggle {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.column-toggle button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.column-toggle button:hover {
+  background-color: #555;
+}
+
+.table-container {
+  margin-top: 10px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dark-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dark-table th, .dark-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.dark-table th {
+  background-color: #2b2b2b;
+  color: #fff;
+}
+
+.dark-table td {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+.dark-table tr:hover {
+  background-color: #333;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.pagination button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:hover {
+  background-color: #555;
+}
+
+.pagination span {
+  color: white;
+}

@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Configuración de la URL base de tu API
-const API_URL = 'http://localhost:8080/get'; // Ajusta el puerto según tu configuración
+const API_URL = 'http://45.55.107.234:8080/personas/get'; // Ajusta el puerto según tu configuración
 
 export const getVuelos = async () => {
   try {
