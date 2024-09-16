@@ -23,7 +23,7 @@ const CrearPersona = () => {
     lastName: true,
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 9;
   const [dropdownOpen, setDropdownOpen] = useState(false); // Control del menú desplegable
 
   // Cargar personas cuando se monta el componente
@@ -41,10 +41,10 @@ const CrearPersona = () => {
     fetchPersonas();
   }, []);
 
-  // Filtrar personas por el pasaporte
+  // Filtrar personas por el nombre
   useEffect(() => {
     const filtered = personas.filter((persona) =>
-      persona.passportId.toLowerCase().includes(filter.toLowerCase())
+      persona.firstName.toLowerCase().includes(filter.toLowerCase())
     );
     setFilteredPersonas(filtered);
     setCurrentPage(1); // Reiniciar paginación cuando se filtra
@@ -92,7 +92,7 @@ const CrearPersona = () => {
               {/* Dropdown Toggle Columnas */}
               <div className="dropdown">
                 <button onClick={() => setDropdownOpen(!dropdownOpen)} className="dropdown-toggle">
-                  Columnas
+                  columnas
                 </button>
                 {dropdownOpen && (
                   <ul className="dropdown-menu">

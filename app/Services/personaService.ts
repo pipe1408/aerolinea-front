@@ -1,7 +1,7 @@
 // app/Services/personaService.ts
 import axios from "axios";
 
-const API_URL = 'http://45.55.107.234:8080/personas'; // Ajusta el puerto según tu configuración
+const API_URL = 'http://104.248.110.182/personas'; // Ajusta el puerto según tu configuración
 
 export const getPersonas = async () => {
   try {

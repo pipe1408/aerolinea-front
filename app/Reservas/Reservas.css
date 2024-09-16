@@ -5,14 +5,13 @@
 }
 
 .left-section {
-  width: 40%; /* Ocupa el 40% del ancho de la pantalla, ajustable */
+  width: 35%; /* Ajustable entre 30% y 40% según lo prefieras */
   padding: 20px;
   border-right: 2px solid #fff; /* Línea divisoria a la derecha */
-  background-color: #000000;
 }
 
 .right-section {
-  width: 60%; /* Espacio vacío o para otros elementos */
+  width: 66%; /* El resto del ancho disponible */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +22,6 @@
   max-width: 100%;
   margin: 0 auto;
   position: relative;
-  padding-bottom: 20px; /* Evitar que el dropdown interfiera */
 }
 
 .dark-table {
@@ -47,9 +45,8 @@
 
 .filter-input {
   padding: 10px;
-  border: 1px solid #000000;
+  border: 1px solid #ccc;
   width: 60%;
-  color: black; /* Color del texto en el input de filtro */
 }
 
 .dropdown {
@@ -59,8 +56,8 @@
 .dropdown-toggle {
   padding: 10px;
   background-color: #333;
-  color: white; /* Texto blanco para el botón del dropdown */
-  border: 1px solid #131212;
+  color: white;
+  border: 1px solid #ccc;
   cursor: pointer;
 }
 
@@ -69,12 +66,11 @@
   top: 100%; /* Aparece justo debajo del botón */
   left: 0;
   z-index: 10; /* Se superpone a la tabla */
-  background-color: #000000; /* Fondo negro para el dropdown */
+  background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
   width: 150px;
   list-style: none;
-  color: white; /* Texto blanco para el dropdown */
 }
 
 .dropdown-menu li {
@@ -86,7 +82,7 @@
   border: none;
   cursor: pointer;
   text-align: left;
-  color: white; /* Color del texto en los botones del dropdown */
+  color: black;
   padding: 5px;
   width: 100%;
   font-size: 14px;
@@ -95,8 +91,10 @@
 .pagination {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 0; /* Eliminar el margen superior */
+  padding-top: 10px; /* Añadir un pequeño relleno */
 }
+
 
 .pagination button {
   padding: 8px 12px;
