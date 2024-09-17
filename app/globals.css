@@ -2,71 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground: #ffffff; /* Cambiado a blanco para modo oscuro */
-    --shadow-color: #2c1b13; /* Cambiado a blanco para modo oscuro */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background-image: url('fondo\ avion.avif'); /* Cambia la ruta por la de tu imagen */
-  background-size: cover; /* Ajusta la imagen para que cubra toda el área del fondo */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
-  background-attachment: fixed; /* Mantiene la imagen fija cuando se hace scroll */
-  font-family: Arial, Helvetica, sans-serif;
-}
 
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  * {
+    @apply border-border;
   }
-}
-
-.container {
-  @apply flex flex-col items-center; /* Centra los elementos verticalmente */
-  min-height: 100vh; /* Asegura que el contenedor ocupe al menos el 100% de la altura de la ventana */
-  background-color: var(--background);
-}
-
-.text-section {
-  @apply flex flex-col items-center mb-10; /* Centra el texto y añade margen en la parte inferior */
-}
-
-.enorme {
-  font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
-  font-size: 92px; /* Ajusta el tamaño según prefieras */
-  padding: 80px 50px;
-  text-align: center;
-  text-transform: uppercase;
-  text-rendering: optimizeLegibility;
-  color: var(--foreground);
-               
-}
-
-.elegantshadow {
-  color: var(--foreground);
-  background-color: var(--background);
-  letter-spacing: 0.15em;
-  text-shadow: 0 1px 0 var(--shadow-color), 
-               0 2px 0 var(--shadow-color),
-               0 3px 0 var(--shadow-color),
-               0 4px 0 var(--shadow-color),
-               0 5px 0 var(--shadow-color),
-               0 6px 0 var(--shadow-color),
-               0 7px 0 var(--shadow-color),
-               0 8px 0 var(--shadow-color),
-               0 9px 0 var(--shadow-color),
-               0 10px 0 var(--shadow-color),
-               0 11px 0 var(--shadow-color),
-               0 12px 0 var(--shadow-color),
-               0 13px 0 var(--shadow-color),
-               0 14px 0 var(--shadow-color),
-               0 15px 0 var(--shadow-color),
-               0 22px 30px rgba(133, 29, 29, 0.9);
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: url('fondo\ avion.avif'); /* Cambia la ruta por la de tu imagen */
+    background-size: cover; /* Ajusta la imagen para que cubra toda el área del fondo */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Mantiene la imagen fija cuando se hace scroll */
+  }
 }

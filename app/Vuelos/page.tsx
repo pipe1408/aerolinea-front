@@ -1,12 +1,24 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getVuelos } from "../Services/vueloService";
-import "./Vuelo.css";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Separator } from "@/components/ui/separator";
+
 
 type Vuelo = {
   flightId: string;
@@ -72,25 +84,25 @@ const CrearVuelo = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="left-section">
+    <div className="flex justify-between">
+      <div className="ml-10">
         <h2>Lista de Vuelos</h2>
         {error ? (
           <p>{error}</p>
         ) : (
           <div>
-            <div className="filter-row">
-              <input
+            <div>
+              <Input
                 type="text"
                 placeholder="Filtrar por Flight ID..."
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="filter-input"
+                className="bg-white"
               />
               <div className="dropdown">
-                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="dropdown-toggle">
+                <Button onClick={() => setDropdownOpen(!dropdownOpen)}>
                   Columnas
-                </button>
+                </Button>
                 {dropdownOpen && (
                   <ul className="dropdown-menu">
                     <li>
@@ -112,8 +124,8 @@ const CrearVuelo = () => {
                 )}
               </div>
             </div>
-            <div className="table-container">
-              <Table className="dark-table">
+            <Card className="w-auto">
+              <Table>
                 <TableHeader>
                   <TableRow>
                     {visibleColumns.flightId && <TableHead>Flight ID</TableHead>}
@@ -141,23 +153,37 @@ const CrearVuelo = () => {
                   )}
                 </TableBody>
               </Table>
-            </div>
-            <div className="pagination">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Previous
-              </button>
-              <span>
-                Page {currentPage} of {totalPages}
-              </span>
-              <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Next
-              </button>
-            </div>
+              <div className="flex items-center justify-center space-x-4 mt-6">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  aria-label="Previous page"
+                >
+                  <ChevronLeftIcon className="h-4 w-4" />
+                </Button>
+                <span className="text-sm font-medium">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                  aria-label="Next page"
+                >
+                  <ChevronRightIcon className="h-4 w-4" />
+                </Button>
+              </div>
+            </Card>
           </div>
         )}
       </div>
 
-      <div className="right-section">
+      <div><Separator orientation="vertical"/></div>
+
+      <div>
         <Popover>
           <PopoverTrigger asChild>
             <Button className="button popover-trigger">Nuevo vuelo ▼</Button>

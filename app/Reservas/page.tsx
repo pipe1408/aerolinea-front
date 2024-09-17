@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { getPersonas } from "../Services/personaService";
-import "./Reservas.css";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // Definición del tipo Persona
@@ -162,7 +161,6 @@ const CrearPersona = () => {
 
       {/* Sección derecha vacía o para otros elementos */}
       <div className="right-section">
-        <p>Otros elementos de la página</p>
       </div>
     </div>
   );
