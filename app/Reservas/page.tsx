@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getPersonas } from "../Services/personaService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import FormularioReservas from "@/components/ui/formulario-reservas";
 
 // Definición del tipo Persona
 type Persona = {
@@ -70,99 +71,7 @@ const CrearPersona = () => {
   };
 
   return (
-    <div className="page-container">
-      {/* Sección izquierda que contiene la tabla y filtros */}
-      <div className="left-section">
-        <h2>Lista de Personas</h2> {/* Título encima de la tabla */}
-        {error ? (
-          <p>{error}</p>
-        ) : (
-          <div>
-            {/* Filtro de búsqueda y Toggle de columnas en la misma fila */}
-            <div className="filter-row">
-              <input
-                type="text"
-                placeholder="Filtrar por pasaporte..."
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="filter-input"
-              />
-
-              {/* Dropdown Toggle Columnas */}
-              <div className="dropdown">
-                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="dropdown-toggle">
-                  columnas
-                </button>
-                {dropdownOpen && (
-                  <ul className="dropdown-menu">
-                    <li>
-                      <button onClick={() => toggleColumnVisibility("passportId")}>
-                        Toggle Passport ID
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => toggleColumnVisibility("firstName")}>
-                        Toggle First Name
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => toggleColumnVisibility("lastName")}>
-                        Toggle Last Name
-                      </button>
-                    </li>
-                  </ul>
-                )}
-              </div>
-            </div>
-
-            {/* Tabla con anchura limitada */}
-            <div className="table-container">
-              <Table className="dark-table">
-                <TableHeader>
-                  <TableRow>
-                    {visibleColumns.passportId && <TableHead>Passport ID</TableHead>}
-                    {visibleColumns.firstName && <TableHead>First Name</TableHead>}
-                    {visibleColumns.lastName && <TableHead>Last Name</TableHead>}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentItems.length > 0 ? (
-                    currentItems.map((persona) => (
-                      <TableRow key={persona.passportId}>
-                        {visibleColumns.passportId && <TableCell>{persona.passportId}</TableCell>}
-                        {visibleColumns.firstName && <TableCell>{persona.firstName}</TableCell>}
-                        {visibleColumns.lastName && <TableCell>{persona.lastName}</TableCell>}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={3}>No hay personas disponibles</TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-
-            {/* Paginación */}
-            <div className="pagination">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Previous
-              </button>
-              <span>
-                Page {currentPage} of {totalPages}
-              </span>
-              <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Sección derecha vacía o para otros elementos */}
-      <div className="right-section">
-      </div>
-    </div>
+    <FormularioReservas/>
   );
 };
 

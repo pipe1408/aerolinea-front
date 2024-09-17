@@ -30,67 +30,69 @@ export default function FormularioReservas() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Reservas</CardTitle>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="ticketId">Ticket ID</Label>
-            <Input 
-              id="ticketId" 
-              placeholder="Enter ticket ID" 
-              required 
-              value={formData.ticketId}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="passport">Passport</Label>
-            <Input 
-              id="passport" 
-              placeholder="Enter passport number" 
-              required 
-              value={formData.passport}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input 
-              id="firstName" 
-              placeholder="Enter first name" 
-              required 
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input 
-              id="lastName" 
-              placeholder="Enter last name" 
-              required 
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="flightId">Flight ID</Label>
-            <Input 
-              id="flightId" 
-              placeholder="Enter flight ID" 
-              required 
-              value={formData.flightId}
-              onChange={handleChange}
-            />
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full">Submit Reservation</Button>
-        </CardFooter>
-      </form>
-    </Card>
+    <div className="h-screen flex items-center justify-center">
+      <Card className="w-full max-w-md mx-auto my-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center">Reservas</CardTitle>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="ticketId">Ticket ID</Label>
+              <Input 
+                id="ticketId" 
+                placeholder="Enter ticket ID" 
+                required 
+                value={formData.ticketId}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="passport">Passport</Label>
+              <Input 
+                id="passport" 
+                placeholder="Enter passport number" 
+                required 
+                value={formData.passport}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name</Label>
+              <Input 
+                id="firstName" 
+                placeholder="Enter first name" 
+                required 
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input 
+                id="lastName" 
+                placeholder="Enter last name" 
+                required 
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="flightId">Flight ID</Label>
+              <Input 
+                id="flightId" 
+                placeholder="Enter flight ID" 
+                required 
+                value={formData.flightId}
+                onChange={handleChange}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" className="w-full">Submit Reservation</Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
   )
 }
