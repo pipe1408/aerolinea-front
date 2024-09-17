@@ -41,8 +41,11 @@ const CrearVuelo = () => {
     asientosLibres: true,
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [popoverCreateOpen, setPopoverCreateOpen] = useState(false); // Control del popover de crear vuelo
+  const [popoverDeleteOpen, setPopoverDeleteOpen] = useState(false); // Control del popover de eliminar vuelo
+  const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); // Control del popover de modificar vuelo
+
   const itemsPerPage = 9;
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchVuelos = async () => {
@@ -81,6 +84,24 @@ const CrearVuelo = () => {
   type ColumnKey = keyof typeof visibleColumns;
   const toggleColumnVisibility = (column: ColumnKey) => {
     setVisibleColumns((prev) => ({ ...prev, [column]: !prev[column] }));
+  };
+
+  const handlePopoverCreateToggle = () => {
+    setPopoverCreateOpen((prev) => !prev);
+    setPopoverDeleteOpen(false);
+    setPopoverModifyOpen(false);
+  };
+
+  const handlePopoverDeleteToggle = () => {
+    setPopoverDeleteOpen((prev) => !prev);
+    setPopoverCreateOpen(false);
+    setPopoverModifyOpen(false);
+  };
+
+  const handlePopoverModifyToggle = () => {
+    setPopoverModifyOpen((prev) => !prev);
+    setPopoverCreateOpen(false);
+    setPopoverDeleteOpen(false);
   };
 
   return (
@@ -188,8 +209,8 @@ const CrearVuelo = () => {
           <PopoverTrigger asChild>
             <Button className="button popover-trigger">Nuevo vuelo ▼</Button>
           </PopoverTrigger>
-          <PopoverContent>
-            <div style={{ padding: '10px' }}>
+          <PopoverContent className="w-80">
+            <div className="grid gap-4">
               <Label>Flight ID</Label>
               <Input type="text" placeholder="Flight ID" />
               <Label>Origen</Label>
@@ -200,41 +221,43 @@ const CrearVuelo = () => {
               <Input type="date" />
               <Label>Asientos Libres</Label>
               <Input type="number" placeholder="Asientos Libres" />
-              <Button style={{ marginTop: '10px' }}>Guardar</Button>
+              <Button className="mt-2">Guardar</Button>
             </div>
           </PopoverContent>
         </Popover>
 
-        <Popover>
+        {/* Popover para eliminar un vuelo */}
+        <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
           <PopoverTrigger asChild>
             <Button className="button popover-trigger">Eliminar vuelo ▼</Button>
           </PopoverTrigger>
-          <PopoverContent>
-            <div style={{ padding: '10px' }}>
+          <PopoverContent className="w-80">
+            <div className="grid gap-4">
               <Label>Flight ID para eliminar</Label>
               <Input type="text" placeholder="Flight ID" />
-              <Button style={{ marginTop: '10px' }}>Eliminar</Button>
+              <Button className="mt-2">Eliminar</Button>
             </div>
           </PopoverContent>
         </Popover>
 
-        <Popover>
-                  <PopoverTrigger asChild>
-                  <Button className="button popover-trigger">Nuevo vuelo ▼</Button>
+        {/* Popover para modificar un vuelo */}
+        <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
+          <PopoverTrigger asChild>
+            <Button className="button popover-trigger">Modificar vuelo ▼</Button>
           </PopoverTrigger>
-          <PopoverContent>
-            <div style={{ padding: '10px' }}>
+          <PopoverContent className="w-80">
+            <div className="grid gap-4">
               <Label>Flight ID</Label>
               <Input type="text" placeholder="Flight ID" />
               <Label>Origen</Label>
-              <Input type="text" placeholder="Origen" />
+              <Input type="text" placeholder="Nuevo Origen" />
               <Label>Destino</Label>
-              <Input type="text" placeholder="Destino" />
+              <Input type="text" placeholder="Nuevo Destino" />
               <Label>Fecha</Label>
               <Input type="date" />
               <Label>Asientos Libres</Label>
-              <Input type="number" placeholder="Asientos Libres" />
-              <Button style={{ marginTop: '10px' }}>Guardar</Button>
+              <Input type="number" placeholder="Nuevo Asientos Libres" />
+              <Button className="mt-2">Modificar</Button>
             </div>
           </PopoverContent>
         </Popover>
@@ -243,4 +266,8 @@ const CrearVuelo = () => {
   );
 };
 
+
+
+
 export default CrearVuelo;
+
