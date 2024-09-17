@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import { toast, Toaster } from "sonner"
 
 export default function FormularioReservas() {
   const [formData, setFormData] = useState({
@@ -26,6 +27,7 @@ export default function FormularioReservas() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     // Handle form submission logic here
+    toast("Reserva creada con éxito.")
     console.log("Form submitted", formData)
   }
 
@@ -93,6 +95,7 @@ export default function FormularioReservas() {
           </CardFooter>
         </form>
       </Card>
+      <Toaster/>
     </div>
   )
 }
