@@ -44,6 +44,7 @@ const CrearVuelo = () => {
   const [popoverCreateOpen, setPopoverCreateOpen] = useState(false); // Control del popover de crear vuelo
   const [popoverDeleteOpen, setPopoverDeleteOpen] = useState(false); // Control del popover de eliminar vuelo
   const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); // Control del popover de modificar vuelo
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const itemsPerPage = 9;
 
