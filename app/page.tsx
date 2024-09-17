@@ -1,33 +1,50 @@
-import Link from 'next/link';
+// app/page.tsx
+"use client";  // Agrega esta línea
+
+import React, { useState } from "react";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarShortcut, MenubarTrigger } from "@/components/ui/menubar";
 
 export default function MainPage() {
+  const [activeComponent, setActiveComponent] = useState<string | null>(null);
+
+  // Función para manejar el clic en los ítems del menú
+  const handleMenuClick = (component: string) => {
+    setActiveComponent(component);
+  };
+
   return (
     <div className="container">
       <div className="elegantshadow">
-        <div className="enorme">Bienvenido
-        </div>
+        <div className="enorme">Bienvenido</div>
       </div>
+
+      <title>PRUEBA 1</title>
 
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger>Gestion de vuelos</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
-              <Link href="/Vuelos" passHref>
+              <a href="/CrearVuelo" target="_blank" rel="noopener noreferrer">
                 <MenubarShortcut>Crear vuelo</MenubarShortcut>
-              </Link>
+              </a>
+            </MenubarItem>
+            <MenubarItem>
+              <a href="/EliminarVuelo" target="_blank" rel="noopener noreferrer">
+                <MenubarShortcut>Eliminar vuelo</MenubarShortcut>
+              </a>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
 
         <MenubarMenu>
           <MenubarTrigger>Reservas</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
-                <Link href="/Reservas" passHref>
-                  <MenubarShortcut>Nueva reserva</MenubarShortcut>
-                </Link>
+          <MenubarContent>
+            <MenubarItem>
+              <MenubarShortcut>Nueva reserva</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+              <MenubarShortcut>Eliminar reserva</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -36,9 +53,7 @@ export default function MainPage() {
           <MenubarTrigger>Ver vuelos</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
-              <Link href="/VerVuelos" passHref>
-                <MenubarShortcut>Ver vuelos</MenubarShortcut>
-              </Link>
+              <MenubarShortcut>Ver vuelos</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>

@@ -1,5 +1,4 @@
 /* Vuelo.css */
-
 .page-container {
   display: flex;
   flex-direction: row;
@@ -63,9 +62,9 @@
 
 .popover-content {
   background-color: white;
-  color: white;
+  color: black;
   padding: 20px;
-  border: 1px solid white; /* Ajustado a blanco para resaltar el borde */
+  border: 1px solid black;
   border-radius: 8px;
   position: absolute;
   top: 100%;
@@ -87,152 +86,53 @@
 
 .popover-content label {
   font-size: 12px;
-  color: black; /* Color del texto de las etiquetas ajustado a negro para contraste */
-  background-color: white; /* Fondo blanco para las etiquetas */
-  padding: 5px; /* Opcional: agrega un poco de relleno para separar del contenido */
-  border-radius: 4px; /* Opcional: agrega un borde redondeado */
+  color: black;
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
 }
 
 .popover-content input {
   padding: 8px;
   width: 100%;
   font-size: 14px;
-  border: 1px solid black; /* Borde negro para contraste */
+  border: 1px solid black;
   border-radius: 4px;
-  background-color: white; /* Fondo blanco para los campos de entrada */
-  color: black; /* Color del texto negro para contraste */
+  background-color: white;
+  color: black;
 }
 
 .popover-content button {
   background-color: transparent;
-  color: white;
+  color: black;
   padding: 8px;
-  border: 1px solid white;
+  border: 1px solid black;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
 }
 
 .popover-content button:hover {
-  background-color: white;
-  color: black;
-}
-
-/* Asegurar que los popovers se desplieguen correctamente en la sección derecha */
-.right-section .popover-container {
-  margin-top: 10px;
-}
-
-.right-section .popover-container .popover-content {
-  top: 110%; /* Ajustar posición para que no cubra el trigger */
-}
-
-.table-container {
-  overflow-x: auto;
-  margin-top: 20px;
-}
-
-.dark-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  background-color: transparent; /* Fondo transparente */
-}
-
-.dark-table th, .dark-table td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: left;
-}
-
-.dark-table th {
   background-color: black;
   color: white;
 }
-
-.dark-table tr:nth-of-type(even) {
-  background-color: transparent; /* Fondo transparente para filas pares */
+/* Overlay oscuro */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50; /* Asegúrate de que el overlay esté debajo del popover */
+  display: none;
 }
 
-.dark-table tr:nth-of-type(odd) {
-  background-color: transparent; /* Fondo transparente para filas impares */
+.overlay.active {
+  display: block;
 }
 
-.dark-table tr:hover {
-  background-color: #ddd;
-}
-
-.filter-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.filter-input {
-  padding: 8px;
-  font-size: 14px;
-  width: 60%;
-  border: 1px solid black;
-  border-radius: 4px;
-  background-color: white;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-toggle {
-  padding: 10px;
-  background-color: #333;
-  color: white;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  border-radius: 4px;
-  margin-top: 5px;
-}
-
-.dropdown-menu button {
-  width: 100%;
-  padding: 8px 16px;
-  text-align: left;
-  background-color: white;
-  border: none;
-  color: black;
-  cursor: pointer;
-}
-
-.dropdown-menu button:hover {
-  background-color: #ddd;
-}
-
-/* Paginación */
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.pagination button {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  background-color: #333;
-  color: white;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  background-color: #888;
-  cursor: not-allowed;
-  color: white;
+/* Asegura que el popover esté encima del overlay */
+.popover-content {
+  z-index: 100;
 }
