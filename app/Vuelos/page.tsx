@@ -41,9 +41,9 @@ const CrearVuelo = () => {
     asientosLibres: true,
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [popoverCreateOpen, setPopoverCreateOpen] = useState(false); // Control del popover de crear vuelo
-  const [popoverDeleteOpen, setPopoverDeleteOpen] = useState(false); // Control del popover de eliminar vuelo
-  const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); // Control del popover de modificar vuelo
+  const [popoverCreateOpen, setPopoverCreateOpen] = useState(false); 
+  const [popoverDeleteOpen, setPopoverDeleteOpen] = useState(false); 
+  const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const itemsPerPage = 10;
@@ -131,17 +131,17 @@ const CrearVuelo = () => {
       });
   
       const data = await response.json();
-      console.log("Respuesta del servidor:", data); // Esta línea sigue siendo útil para depuración
+      console.log("Respuesta del servidor:", data); 
   
-      if (data.successful) { // Cambia aquí de `data.success` a `data.successful`
-        // Actualiza los vuelos en el frontend tras modificar
+      if (data.successful) { 
+        
         const nuevosVuelos = vuelos.map((vuelo) =>
           vuelo.flightId === vueloModificado.flightId ? vueloModificado : vuelo
         );
         setVuelos(nuevosVuelos);
         setPopoverModifyOpen(false);
       } else {
-        alert("Error al modificar vuelo: " + data.mensaje); // Cambia aquí de `data.message` a `data.mensaje`
+        alert("Error al modificar vuelo: " + data.mensaje); 
       }
     } catch (error) {
       console.error("Error al modificar vuelo", error);
@@ -276,7 +276,7 @@ const CrearVuelo = () => {
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
       <div className="flex flex-col justify-center items-center space-y-40" style={{ marginLeft: "30px", marginTop: "-70px"}}>
-  {/* Popover para crear un nuevo vuelo */}
+  
   <Popover>
     <PopoverTrigger asChild>
       <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" , border: "8px solid #5a90d2"}} >Nuevo vuelo ▼</Button>
@@ -298,7 +298,7 @@ const CrearVuelo = () => {
 </PopoverContent>
   </Popover>
 
-  {/* Popover para eliminar un vuelo */}
+ 
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
     <PopoverTrigger asChild>
       <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px", border: "8px solid #5a90d2" }}>Eliminar vuelo ▼</Button>
@@ -313,7 +313,7 @@ const CrearVuelo = () => {
 
   </Popover>
 
-  {/* Popover para modificar un vuelo */}
+
   <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
   <PopoverTrigger asChild>
     <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "8px solid #5a90d2" }}>Modificar vuelo ▼</Button>
