@@ -67,7 +67,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    background-image: url('fondo\ avion.avif'); /* Cambia la ruta por la de tu imagen */
+    background-image: url('fondo\ mundo\ azul.png'); 
     background-size: cover; /* Ajusta la imagen para que cubra toda el área del fondo */
     background-position: center; /* Centra la imagen */
     background-repeat: no-repeat; /* Evita que la imagen se repita */

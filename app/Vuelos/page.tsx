@@ -106,8 +106,8 @@ const CrearVuelo = () => {
   };
 
   return (
-    <div className="flex align-center">
-      <div className="ml-10 mr-10 w-full max-w-[60%] h-full" >
+    <div className="flex align-center "style={{ marginLeft: "90px", marginTop: "60px"}}>
+      <div className="ml-10 mr-10 w-full max-w-[60%] h-full"style={{ marginLeft: "90px", marginTop: "15px"}} >
         <h2>Lista de Vuelos</h2>
         {error ? (
           <p>{error}</p>
@@ -228,15 +228,14 @@ const CrearVuelo = () => {
         )}
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
-      <div style={{marginTop: "110px"}}>
-      {/* Popover para crear un nuevo vuelo */}
-      <div className="flex flex-col justify-center items-center space-y-9 " style={{ marginLeft: "90px", marginTop: "-60px", borderRadius: "20px", backgroundColor: "#AAAFBF", width: "300px", height: "470px"}}>
+      <div style={{marginTop: "155px"}}>
+      <div className="flex flex-col justify-center items-center space-y-9 shadow-lg" style={{ marginLeft: "90px", marginTop: "-60px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "470px"}}>
   {/* Popover para crear un nuevo vuelo */}
   <Popover>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg" >Nuevo vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{ marginBottom: "70px", height:"50px", width:"200px" }} >Nuevo vuelo ▼</Button>
     </PopoverTrigger>
-    <PopoverContent className="w-80 ">
+    <PopoverContent className="w-90 ">
     <div className="grid gap-4">
       <Label>Flight ID</Label>
       <Input type="text" placeholder="Flight ID" />
@@ -256,9 +255,9 @@ const CrearVuelo = () => {
   {/* Popover para eliminar un vuelo */}
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg">Eliminar vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{ marginBottom: "60px", height:"50px", width:"200px" }}>Eliminar vuelo ▼</Button>
     </PopoverTrigger>
-    <PopoverContent className="w-80">
+    <PopoverContent className="w-90">
     <div className="grid gap-4">
       <Label>Flight ID para eliminar</Label>
       <Input type="text" placeholder="Flight ID" />
@@ -271,9 +270,9 @@ const CrearVuelo = () => {
   {/* Popover para modificar un vuelo */}
   <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg">Modificar vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{height:"50px", width:"200px"}}>Modificar vuelo ▼</Button>
     </PopoverTrigger>
-    <PopoverContent className="w-80">
+    <PopoverContent className="w-90">
       <div className="grid gap-4">
         <Label>Flight ID</Label>
         <Input type="text" placeholder="Flight ID" />
