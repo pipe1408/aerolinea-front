@@ -35,17 +35,6 @@ export default function MainPage() {
               </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
-
-          <MenubarMenu>
-            <MenubarTrigger className="text-lg font-semibold">Vuelos</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
-                <Link href="/VerTodos" passHref>
-                  <MenubarShortcut className="text-sm">Ver vuelos</MenubarShortcut>
-                </Link>
-              </MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
         </Menubar>
       </NavigationMenu>
     </div>

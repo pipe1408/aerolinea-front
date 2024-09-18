@@ -229,7 +229,7 @@ const CrearVuelo = () => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-9 shadow-lg" style={{ marginLeft: "90px", marginTop: "-60px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "470px"}}>
+      <div className="flex flex-col justify-center items-center space-y-9 shadow-lg" style={{ marginLeft: "30px", marginTop: "-140px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "470px"}}>
   {/* Popover para crear un nuevo vuelo */}
   <Popover>
     <PopoverTrigger asChild>
