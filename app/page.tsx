@@ -1,4 +1,4 @@
-// app/page.tsx
+
 "use client";  // Agrega esta línea
 
 import React, { useState } from "react";
@@ -12,7 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import AccordionNav from '@/components/ui/accordion-nav';
-import FormularioReservas from '@/components/ui/formulario-reservas';
+import PaginaPrincipal from "@/components/ui/pagina-principal";
+import page from "./Vuelos/page";
 
 
 export default function MainPage() {
@@ -25,7 +26,7 @@ export default function MainPage() {
 
   return (
     <div>
-      <FormularioReservas/>
+      <PaginaPrincipal/>
     </div>
   );
 }
