@@ -103,7 +103,7 @@ export default function FormularioReservas() {
       toast(`${JSON.stringify(firstResponse.data.mensaje)}`)
 
       // Execute the second POST request
-      const secondResponse = await axios.post('http://localhost:8080/reservas/guardar', {
+      const secondResponse = await axios.post('http://104.248.110.182/reservas/guardar', {
         vueloId: formData.flightId,
         pasajeroId: formData.passport,
       })
