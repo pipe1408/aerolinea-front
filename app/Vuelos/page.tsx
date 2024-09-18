@@ -229,69 +229,69 @@ const CrearVuelo = () => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div>
-    <div className="flex justify-center items-center h-screen">
-  <div className=" max-w-[100%] flex">
-    {/* Popover para crear un nuevo vuelo */}
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button className="bg-white text-black">Nuevo vuelo ▼</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <Label>Flight ID</Label>
-          <Input type="text" placeholder="Flight ID" />
-          <Label>Origen</Label>
-          <Input type="text" placeholder="Origen" />
-          <Label>Destino</Label>
-          <Input type="text" placeholder="Destino" />
-          <Label>Fecha</Label>
-          <Input type="date" />
-          <Label>Asientos Libres</Label>
-          <Input type="number" placeholder="Asientos Libres" />
-          <Button className="mt-2">Guardar</Button>
-        </div>
-      </PopoverContent>
-    </Popover>
-
-    {/* Popover para eliminar un vuelo */}
-    <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
-      <PopoverTrigger asChild>
-        <Button className="bg-white text-black">Eliminar vuelo ▼</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <Label>Flight ID para eliminar</Label>
-          <Input type="text" placeholder="Flight ID" />
-          <Button className="mt-2">Eliminar</Button>
-        </div>
-      </PopoverContent>
-    </Popover>
-
-    {/* Popover para modificar un vuelo */}
-    <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
-      <PopoverTrigger asChild>
-        <Button className="bg-white text-black">Modificar vuelo ▼</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <Label>Flight ID</Label>
-          <Input type="text" placeholder="Flight ID" />
-          <Label>Origen</Label>
-          <Input type="text" placeholder="Nuevo Origen" />
-          <Label>Destino</Label>
-          <Input type="text" placeholder="Nuevo Destino" />
-          <Label>Fecha</Label>
-          <Input type="date" />
-          <Label>Asientos Libres</Label>
-          <Input type="number" placeholder="Nuevo Asientos Libres" />
-          <Button className="mt-2">Modificar</Button>
-        </div>
-      </PopoverContent>
-    </Popover>
-            </div>
-          </div>
+      <div className="flex flex-col justify-center items-center space-y-4 h-screen">
+  {/* Popover para crear un nuevo vuelo */}
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button className="bg-white text-black">Nuevo vuelo ▼</Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-80">
+      <div className="grid gap-4">
+        <Label>Flight ID</Label>
+        <Input type="text" placeholder="Flight ID" />
+        <Label>Origen</Label>
+        <Input type="text" placeholder="Origen" />
+        <Label>Destino</Label>
+        <Input type="text" placeholder="Destino" />
+        <Label>Fecha</Label>
+        <Input type="date" />
+        <Label>Asientos Libres</Label>
+        <Input type="number" placeholder="Asientos Libres" />
+        <Button className="mt-2">Guardar</Button>
       </div>
-    </div>
+    </PopoverContent>
+  </Popover>
+
+  {/* Popover para eliminar un vuelo */}
+  <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
+    <PopoverTrigger asChild>
+      <Button className="bg-white text-black">Eliminar vuelo ▼</Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-80">
+      <div className="grid gap-4">
+        <Label>Flight ID para eliminar</Label>
+        <Input type="text" placeholder="Flight ID" />
+        <Button className="mt-2">Eliminar</Button>
+      </div>
+    </PopoverContent>
+  </Popover>
+
+  {/* Popover para modificar un vuelo */}
+  <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
+    <PopoverTrigger asChild>
+      <Button className="bg-white text-black">Modificar vuelo ▼</Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-80">
+      <div className="grid gap-4">
+        <Label>Flight ID</Label>
+        <Input type="text" placeholder="Flight ID" />
+        <Label>Origen</Label>
+        <Input type="text" placeholder="Nuevo Origen" />
+        <Label>Destino</Label>
+        <Input type="text" placeholder="Nuevo Destino" />
+        <Label>Fecha</Label>
+        <Input type="date" />
+        <Label>Asientos Libres</Label>
+        <Input type="number" placeholder="Nuevo Asientos Libres" />
+        <Button className="mt-2">Modificar</Button>
+      </div>
+    </PopoverContent>
+  </Popover>
+</div>
+</div>
+</div>
+
+
   );
 };
 
