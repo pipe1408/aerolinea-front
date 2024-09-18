@@ -229,11 +229,11 @@ const CrearVuelo = () => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-40 shadow-lg" style={{ marginLeft: "30px", marginTop: "-140px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "550px"}}>
+      <div className="flex flex-col justify-center items-center space-y-40" style={{ marginLeft: "30px", marginTop: "-70px"}}>
   {/* Popover para crear un nuevo vuelo */}
   <Popover>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" }} >Nuevo vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" , border: "8px solid #5a90d2"}} >Nuevo vuelo ▼</Button>
     </PopoverTrigger>
     <PopoverContent className="w-90 ">
     <div className="grid gap-4">
@@ -255,7 +255,7 @@ const CrearVuelo = () => {
   {/* Popover para eliminar un vuelo */}
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ marginBottom: "60px", height:"50px", width:"200px" }}>Eliminar vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px", border: "8px solid #5a90d2" }}>Eliminar vuelo ▼</Button>
     </PopoverTrigger>
     <PopoverContent className="w-90">
     <div className="grid gap-4">
@@ -270,7 +270,7 @@ const CrearVuelo = () => {
   {/* Popover para modificar un vuelo */}
   <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{height:"50px", width:"200px"}}>Modificar vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{height:"50px", width:"200px", border: "8px solid #5a90d2"}}>Modificar vuelo ▼</Button>
     </PopoverTrigger>
     <PopoverContent className="w-90">
       <div className="grid gap-4">
