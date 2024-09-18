@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getVuelos } from "../Services/vueloService";
+import { actualizarVuelo, eliminarVuelo, getVueloById, getVuelos, guardarVuelo } from "../Services/vueloService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
+import axios from "axios";
 
 
 type Vuelo = {
@@ -27,6 +28,7 @@ type Vuelo = {
   fecha: string;
   asientosLibres: number;
 };
+
 
 const CrearVuelo = () => {
   const [vuelos, setVuelos] = useState<Vuelo[]>([]);
@@ -45,6 +47,80 @@ const CrearVuelo = () => {
   const [popoverDeleteOpen, setPopoverDeleteOpen] = useState(false); // Control del popover de eliminar vuelo
   const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); // Control del popover de modificar vuelo
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Estado para manejar el formulario de nuevo vuelo
+  const [nuevoVuelo, setNuevoVuelo] = React.useState({
+    vueloId: '',
+    origen: '',
+    destino: '',
+    fecha: '',
+    asientosDisponibles: 0
+  });
+  
+  const [vueloAModificar, setVueloAModificar] = useState<Vuelo>({
+    flightId: '',
+    origen: '',
+    destino: '',
+    fecha: '',
+    asientosLibres: 0
+  });
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNuevoVuelo(prevState => ({ ...prevState, [name]: value }));
+  };
+
+  const handleGuardarVuelo = async () => {
+    try {
+      await guardarVuelo(nuevoVuelo);
+      alert('Vuelo guardado exitosamente');
+    } catch (error) {
+      alert('Error al guardar el vuelo');
+    }
+  };
+
+  const [vueloIdEliminar, setVueloIdEliminar] = React.useState('');
+
+const handleEliminarVuelo = async () => {
+  try {
+    await eliminarVuelo(vueloIdEliminar);
+    alert('Vuelo eliminado exitosamente');
+  } catch (error) {
+    console.error('Error al eliminar el vuelo:');
+    alert('Error al eliminar el vuelo');
+  }
+};
+
+const handleModificarVuelo = async () => {
+  if (!vueloAModificar) return;
+
+  try {
+    // Primero, eliminar el vuelo actual
+    await eliminarVuelo(vueloAModificar.flightId);
+    // Luego, crear un nuevo vuelo con los datos actualizados
+    await guardarVuelo({
+      flightId: vueloAModificar.flightId,
+      origen: vueloAModificar.origen,
+      destino: vueloAModificar.destino,
+      fecha: vueloAModificar.fecha,
+      asientosLibres: vueloAModificar.asientosLibres,
+    });
+    alert('Vuelo modificado exitosamente');
+  } catch (error) {
+    console.error('Error al modificar el vuelo:', error);
+    alert('Error al modificar el vuelo');
+  }
+};
+
+const handleBuscarVuelo = async (id: string) => {
+  try {
+    const vuelo = await getVueloById(id);
+    setVueloAModificar(vuelo);
+  } catch (error) {
+    console.error('Error fetching vuelo:');
+    alert('Error al buscar el vuelo');
+  }
+};
 
   const itemsPerPage = 10;
 
@@ -70,6 +146,7 @@ const CrearVuelo = () => {
     setCurrentPage(1);
   }, [filter, vuelos]);
 
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredVuelos.slice(indexOfFirstItem, indexOfLastItem);
@@ -232,68 +309,174 @@ const CrearVuelo = () => {
       <div className="flex flex-col justify-center items-center space-y-40 shadow-lg" style={{ marginLeft: "30px", marginTop: "-140px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "550px"}}>
   {/* Popover para crear un nuevo vuelo */}
   <Popover>
-    <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" }} >Nuevo vuelo ▼</Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-90 ">
-    <div className="grid gap-4">
-      <Label>Flight ID</Label>
-      <Input type="text" placeholder="Flight ID" />
-      <Label>Origen</Label>
-      <Input type="text" placeholder="Origen" />
-      <Label>Destino</Label>
-      <Input type="text" placeholder="Destino" />
-      <Label>Fecha</Label>
-      <Input type="date" />
-      <Label>Asientos Libres</Label>
-      <Input type="number" placeholder="Asientos Libres" />
-      <Button className="mt-2">Guardar</Button>
+      <PopoverTrigger asChild>
+      <Button className="bg-white text-black shadow-lg" style={{ height: '50px', width: '200px' }}>
+  Nuevo vuelo ▼
+</Button>
+</PopoverTrigger>
+<PopoverContent className="w-90">
+  <div className="grid gap-4">
+    <Label htmlFor="vueloId">Flight ID</Label>
+    <Input
+      id="vueloId"
+      type="text"
+      name="vueloId"
+      placeholder="Flight ID"
+      value={nuevoVuelo.vueloId}
+      onChange={handleInputChange}
+      required
+    />
+    <Label htmlFor="origen">Origen</Label>
+    <Input
+      id="origen"
+      type="text"
+      name="origen"
+      placeholder="Origen"
+      value={nuevoVuelo.origen}
+      onChange={handleInputChange}
+      required
+    />
+    <Label htmlFor="destino">Destino</Label>
+    <Input
+      id="destino"
+      type="text"
+      name="destino"
+      placeholder="Destino"
+      value={nuevoVuelo.destino}
+      onChange={handleInputChange}
+      required
+    />
+    <Label htmlFor="fecha">Fecha</Label>
+    <Input
+      id="fecha"
+      type="date"
+      name="fecha"
+      value={nuevoVuelo.fecha}
+      onChange={handleInputChange}
+      required
+    />
+    <Label htmlFor="asientosDisponibles">Asientos Disponibles</Label>
+    <Input
+      id="asientosDisponibles"
+      type="number"
+      name="asientosDisponibles"
+      placeholder="Asientos Disponibles"
+      value={nuevoVuelo.asientosDisponibles}
+      onChange={handleInputChange}
+      required
+    />
+    <Button className="mt-2" onClick={handleGuardarVuelo}>
+      Guardar
+    </Button>
   </div>
 </PopoverContent>
   </Popover>
 
   {/* Popover para eliminar un vuelo */}
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
-    <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ marginBottom: "60px", height:"50px", width:"200px" }}>Eliminar vuelo ▼</Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-90">
+  <PopoverTrigger asChild>
+    <Button className="bg-white text-black shadow-lg" style={{ marginBottom: "60px", height: "50px", width: "200px" }}>
+      Eliminar vuelo ▼
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-90">
     <div className="grid gap-4">
-      <Label>Flight ID para eliminar</Label>
-      <Input type="text" placeholder="Flight ID" />
-      <Button className="mt-2">Eliminar</Button>
+      <Label htmlFor="vueloIdEliminar">Flight ID para eliminar</Label>
+      <Input
+        id="vueloIdEliminar"
+        type="text"
+        name="vueloIdEliminar"
+        placeholder="Flight ID"
+        value={vueloIdEliminar}
+        onChange={(e) => setVueloIdEliminar(e.target.value)}
+      />
+      <Button className="mt-2" onClick={handleEliminarVuelo}>
+        Eliminar
+      </Button>
     </div>
-</PopoverContent>
+      </PopoverContent>
 
   </Popover>
 
   {/* Popover para modificar un vuelo */}
   <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
-    <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{height:"50px", width:"200px"}}>Modificar vuelo ▼</Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-90">
-      <div className="grid gap-4">
-        <Label>Flight ID</Label>
-        <Input type="text" placeholder="Flight ID" />
-        <Label>Origen</Label>
-        <Input type="text" placeholder="Nuevo Origen" />
-        <Label>Destino</Label>
-        <Input type="text" placeholder="Nuevo Destino" />
-        <Label>Fecha</Label>
-        <Input type="date" />
-        <Label>Asientos Libres</Label>
-        <Input type="number" placeholder="Nuevo Asientos Libres" />
-        <Button className="mt-2">Modificar</Button>
-      </div>
+  <PopoverTrigger asChild>
+    <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px" }}>
+      Modificar vuelo ▼
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent 
+    className="w-90" 
+    style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'flex-start', 
+      top: '-10px', // Ajusta la distancia superior para posicionar arriba del botón
+      marginTop: '10px' // Ajusta el margen superior para separar del botón
+    }}
+  >
+    <div className="grid gap-4">
+      <Label htmlFor="vueloIdModificar">Flight ID</Label>
+      <Input
+        id="vueloIdModificar"
+        type="text"
+        name="vueloIdModificar"
+        placeholder="Flight ID"
+        value={vueloAModificar ? vueloAModificar.flightId : ''}
+        onChange={(e) => {
+          const newFlightId = e.target.value;
+          setVueloAModificar(prev => ({
+            ...prev,
+            flightId: newFlightId
+          }));
+          handleBuscarVuelo(newFlightId); // Busca el vuelo cuando cambia el ID
+        }}
+      />
+      <Label htmlFor="origenModificar">Origen</Label>
+      <Input
+        id="origenModificar"
+        type="text"
+        name="origenModificar"
+        placeholder="Nuevo Origen"
+        value={vueloAModificar ? vueloAModificar.origen : ''}
+        onChange={(e) => setVueloAModificar(prev => ({ ...prev, origen: e.target.value }))}
+      />
+      <Label htmlFor="destinoModificar">Destino</Label>
+      <Input
+        id="destinoModificar"
+        type="text"
+        name="destinoModificar"
+        placeholder="Nuevo Destino"
+        value={vueloAModificar ? vueloAModificar.destino : ''}
+        onChange={(e) => setVueloAModificar(prev => ({ ...prev, destino: e.target.value }))}
+      />
+      <Label htmlFor="fechaModificar">Fecha</Label>
+      <Input
+        id="fechaModificar"
+        type="date"
+        name="fechaModificar"
+        value={vueloAModificar ? vueloAModificar.fecha : ''}
+        onChange={(e) => setVueloAModificar(prev => ({ ...prev, fecha: e.target.value }))}
+      />
+      <Label htmlFor="asientosLibresModificar">Asientos Libres</Label>
+      <Input
+        id="asientosLibresModificar"
+        type="number"
+        name="asientosLibresModificar"
+        placeholder="Nuevo Asientos Libres"
+        value={vueloAModificar ? vueloAModificar.asientosLibres : ''}
+        onChange={(e) => setVueloAModificar(prev => ({ ...prev, asientosLibres: Number(e.target.value) }))}
+      />
+      <Button className="mt-2" onClick={handleModificarVuelo}>
+        Modificar
+      </Button>
+    </div>
     </PopoverContent>
 
   </Popover>
 </div>
 </div>
 </div>
-
-
   );
 };
 
