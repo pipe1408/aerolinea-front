@@ -229,11 +229,11 @@ const CrearVuelo = () => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-9 shadow-lg" style={{ marginLeft: "30px", marginTop: "-140px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "470px"}}>
+      <div className="flex flex-col justify-center items-center space-y-40 shadow-lg" style={{ marginLeft: "30px", marginTop: "-140px", borderRadius: "20px", backgroundColor: "#5a90d2", width: "300px", height: "550px"}}>
   {/* Popover para crear un nuevo vuelo */}
   <Popover>
     <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ marginBottom: "70px", height:"50px", width:"200px" }} >Nuevo vuelo ▼</Button>
+      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" }} >Nuevo vuelo ▼</Button>
     </PopoverTrigger>
     <PopoverContent className="w-90 ">
     <div className="grid gap-4">
