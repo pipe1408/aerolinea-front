@@ -1,96 +1,78 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import React, { useEffect, useState } from "react";
+import { getPersonas } from "../Services/personaService";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import FormularioReservas from "@/components/ui/formulario-reservas";
 
-export default function FormularioReservas() {
-  const [formData, setFormData] = useState({
-    ticketId: "",
-    passport: "",
-    firstName: "",
-    lastName: "",
-    flightId: ""
-  })
+// Definición del tipo Persona
+type Persona = {
+  passportId: string;
+  firstName: string;
+  lastName: string;
+};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value
-    }))
-  }
+const CrearPersona = () => {
+  const [personas, setPersonas] = useState<Persona[]>([]);
+  const [filteredPersonas, setFilteredPersonas] = useState<Persona[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<string>(""); // Filtro de búsqueda
+  const [visibleColumns, setVisibleColumns] = useState({
+    passportId: true,
+    firstName: true,
+    lastName: true,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Control del menú desplegable
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    // Handle form submission logic here
-    console.log("Form submitted", formData)
-  }
+  // Cargar personas cuando se monta el componente
+  useEffect(() => {
+    const fetchPersonas = async () => {
+      try {
+        const data = await getPersonas();
+        setPersonas(data);
+        setFilteredPersonas(data);
+      } catch (error) {
+        setError("Error al cargar las personas");
+      }
+    };
+
+    fetchPersonas();
+  }, []);
+
+  // Filtrar personas por el nombre
+  useEffect(() => {
+    const filtered = personas.filter((persona) =>
+      persona.firstName.toLowerCase().includes(filter.toLowerCase())
+    );
+    setFilteredPersonas(filtered);
+    setCurrentPage(1); // Reiniciar paginación cuando se filtra
+  }, [filter, personas]);
+
+  // Calcular los elementos a mostrar en la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredPersonas.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Paginación
+  const totalPages = Math.ceil(filteredPersonas.length / itemsPerPage);
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  // Cambiar visibilidad de columnas
+  type ColumnKey = keyof typeof visibleColumns;
+  const toggleColumnVisibility = (column: ColumnKey) => {
+    setVisibleColumns((prev) => ({ ...prev, [column]: !prev[column] }));
+  };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Reservas</CardTitle>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="ticketId">Ticket ID</Label>
-            <Input 
-              id="ticketId" 
-              placeholder="Enter ticket ID" 
-              required 
-              value={formData.ticketId}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="passport">Passport</Label>
-            <Input 
-              id="passport" 
-              placeholder="Enter passport number" 
-              required 
-              value={formData.passport}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input 
-              id="firstName" 
-              placeholder="Enter first name" 
-              required 
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input 
-              id="lastName" 
-              placeholder="Enter last name" 
-              required 
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="flightId">Flight ID</Label>
-            <Input 
-              id="flightId" 
-              placeholder="Enter flight ID" 
-              required 
-              value={formData.flightId}
-              onChange={handleChange}
-            />
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full">Submit Reservation</Button>
-        </CardFooter>
-      </form>
-    </Card>
-  )
-}
+    <FormularioReservas/>
+  );
+};
+
+export default CrearPersona;
