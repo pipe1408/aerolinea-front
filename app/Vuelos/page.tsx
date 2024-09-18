@@ -306,11 +306,11 @@ const handleBuscarVuelo = async (id: string) => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-40" style={{ marginLeft: "30px", marginTop: "-70px"}}>
+      <div className="flex flex-col justify-center items-center space-y-40" style={{marginLeft: "30px", marginTop: "-70px", height:"500px"}}>
   {/* Popover para crear un nuevo vuelo */}
   <Popover>
       <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg" style={{ height: '50px', width: '200px' }}>
+      <Button className="bg-white text-black shadow-lg" style={{ height: '50px', width: '200px', marginTop: '-80px'}}>
   Nuevo vuelo ▼
 </Button>
 </PopoverTrigger>
@@ -368,22 +368,6 @@ const handleBuscarVuelo = async (id: string) => {
     <Button className="mt-2" onClick={handleGuardarVuelo}>
       Guardar
     </Button>
-    <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" , border: "8px solid #5a90d2"}} >Nuevo vuelo ▼</Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-90 ">
-    <div className="grid gap-4">
-      <Label>Flight ID</Label>
-      <Input type="text" placeholder="Flight ID" />
-      <Label>Origen</Label>
-      <Input type="text" placeholder="Origen" />
-      <Label>Destino</Label>
-      <Input type="text" placeholder="Destino" />
-      <Label>Fecha</Label>
-      <Input type="date" />
-      <Label>Asientos Libres</Label>
-      <Input type="number" placeholder="Asientos Libres" />
-      <Button className="mt-2">Guardar</Button>
   </div>
 </PopoverContent>
   </Popover>
@@ -391,15 +375,11 @@ const handleBuscarVuelo = async (id: string) => {
   {/* Popover para eliminar un vuelo */}
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
   <PopoverTrigger asChild>
-    <Button className="bg-white text-black shadow-lg" style={{ marginBottom: "60px", height: "50px", width: "200px" }}>
+    <Button className="bg-white text-black shadow-lg" style={{height: "50px", width: "200px" }}>
       Eliminar vuelo ▼
     </Button>
   </PopoverTrigger>
   <PopoverContent className="w-90">
-    <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px", border: "8px solid #5a90d2" }}>Eliminar vuelo ▼</Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-90">
     <div className="grid gap-4">
       <Label htmlFor="vueloIdEliminar">Flight ID para eliminar</Label>
       <Input
@@ -491,23 +471,6 @@ const handleBuscarVuelo = async (id: string) => {
         Modificar
       </Button>
     </div>
-    <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg"style={{height:"50px", width:"200px", border: "8px solid #5a90d2"}}>Modificar vuelo ▼</Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-90">
-      <div className="grid gap-4">
-        <Label>Flight ID</Label>
-        <Input type="text" placeholder="Flight ID" />
-        <Label>Origen</Label>
-        <Input type="text" placeholder="Nuevo Origen" />
-        <Label>Destino</Label>
-        <Input type="text" placeholder="Nuevo Destino" />
-        <Label>Fecha</Label>
-        <Input type="date" />
-        <Label>Asientos Libres</Label>
-        <Input type="number" placeholder="Nuevo Asientos Libres" />
-        <Button className="mt-2">Modificar</Button>
-      </div>
     </PopoverContent>
 
   </Popover>
