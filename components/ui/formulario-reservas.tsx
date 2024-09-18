@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useState } from "react"
 import { toast, Toaster } from "sonner"
 import { Combobox } from "./combobox"
+import axios from "axios"
 
 export default function FormularioReservas() {
   const [formData, setFormData] = useState({
@@ -18,18 +19,101 @@ export default function FormularioReservas() {
     flightId: ""
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [fieldsDisabled, setFieldsDisabled] = useState({
+    firstName: true,
+    lastName: true
+  })
+
+  const handleReceiveValue = (value:string) => {
+    console.log("Received value from child:", value)
+    setFormData(prevData => ({
+      ...prevData,
+      flightId: value
+    }))
+  }
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
     setFormData(prevData => ({
       ...prevData,
       [id]: value
     }))
+  
+    if (id === 'passport') {
+      
+      if (value.trim() === "") {
+        // Disable fields when passport is empty
+        setFieldsDisabled({
+          firstName: true,
+          lastName: true
+        })
+        // Clear firstName and lastName fields
+        setFormData(prevData => ({
+          ...prevData,
+          firstName: "",
+          lastName: ""
+        }))
+      } else{
+        try {
+          const response = await axios.get(`http://104.248.110.182/personas/find/${value}`)
+          if (response.data) {
+            const { firstName, lastName } = response.data
+            setFormData(prevData => ({
+              ...prevData,
+              firstName: firstName || prevData.firstName,
+              lastName: lastName || prevData.lastName
+            }))
+  
+            setFieldsDisabled({
+              firstName: true,
+              lastName: true
+            })
+          } else {
+            setFieldsDisabled({
+              firstName: false,
+              lastName: false
+            })
+  
+            setFormData(prevData => ({
+              ...prevData,
+              firstName: "",
+              lastName: ""
+            }))
+            // Handle the case when the response is null
+            console.log('No data found for this passport.')
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error)
+        }
+      }
+    }
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    // Handle form submission logic here
-    toast("Reserva creada con éxito.")
+
+    try {
+      // Execute the first POST request
+      const firstResponse = await axios.post('http://104.248.110.182/personas/guardar', {
+        pasaporteId: formData.passport,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      })
+      console.log('First POST request successful')
+      toast(`${JSON.stringify(firstResponse.data.mensaje)}`)
+
+      // Execute the second POST request
+      const secondResponse = await axios.post('http://localhost:8080/reservas/guardar', {
+        vueloId: formData.flightId,
+        pasajeroId: formData.passport,
+      })
+      console.log('Second POST request successful')
+      toast(`${JSON.stringify(secondResponse.data.mensaje)}`)
+
+    } catch (error) {
+      console.error('Error submitting form:', error)
+    }
+
     console.log("Form submitted", formData)
   }
 
@@ -73,6 +157,7 @@ export default function FormularioReservas() {
                     id="firstName" 
                     placeholder="Enter first name" 
                     required 
+                    disabled={fieldsDisabled.firstName}
                     value={formData.firstName}
                     onChange={handleChange}
                   />
@@ -83,12 +168,13 @@ export default function FormularioReservas() {
                     id="lastName" 
                     placeholder="Enter last name" 
                     required 
+                    disabled={fieldsDisabled.lastName}
                     value={formData.lastName}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mt-6">
-                  <Combobox/>
+                  <Combobox sendValueToParent={handleReceiveValue}/>
                 </div>
               </CardContent>
               <CardFooter>

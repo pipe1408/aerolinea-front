@@ -18,14 +18,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 
 interface Vuelo {
     value: string;
     label: string;
 }
 
-export function Combobox() {
+export function Combobox({ sendValueToParent }: { sendValueToParent: (value: string) => void }) {
     const [vuelos, setVuelos] = useState<Vuelo[]>([]);
     const fetchFlights = async () => {
         try {
@@ -45,6 +45,10 @@ export function Combobox() {
     }, []);
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
+
+    const handleSendValue = (currentValue: string) => {
+        sendValueToParent(currentValue) // Send value to parent via callback
+    }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,6 +78,7 @@ export function Combobox() {
                             onSelect={(currentValue) => {
                                 setValue(currentValue === value ? "" : currentValue)
                                 setOpen(false)
+                                handleSendValue(currentValue)
                             }}
                         >
                         <Check
