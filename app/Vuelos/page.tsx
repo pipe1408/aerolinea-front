@@ -74,23 +74,45 @@ const CrearVuelo = () => {
     try {
       await guardarVuelo(nuevoVuelo);
       alert('Vuelo guardado exitosamente');
+  
+      // Recargar la página después de guardar
+      window.location.reload();
     } catch (error) {
       alert('Error al guardar el vuelo');
     }
-  };
-
+  };  
   const [vueloIdEliminar, setVueloIdEliminar] = React.useState('');
 
-const handleEliminarVuelo = async () => {
-  try {
-    await eliminarVuelo(vueloIdEliminar);
-    alert('Vuelo eliminado exitosamente');
-  } catch (error) {
-    console.error('Error al eliminar el vuelo:');
-    alert('Error al eliminar el vuelo');
-  }
-};
-
+  const handleEliminarVuelo = async () => {
+    try {
+      // Verifica si el vuelo existe
+      const vuelo = await getVueloById(vueloIdEliminar);
+  
+      // Si el vuelo no existe, informa al usuario y detiene la ejecución
+      if (!vuelo) {
+        alert('El vuelo no existe');
+        return;
+      }
+  
+      // Si el vuelo existe, procede con la eliminación
+      await eliminarVuelo(vueloIdEliminar);
+      alert('Vuelo eliminado exitosamente');
+  
+      // Actualiza la página después de eliminar
+      window.location.reload();
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        // Si la API devuelve un 404, informa que el vuelo no existe
+        alert('El vuelo no existe');
+      } else {
+        // Maneja otros tipos de errores
+        console.error('Error al eliminar el vuelo:', error);
+        alert('Error al eliminar el vuelo');
+      }
+    }
+  };
+  
+  
 const handleModificarVuelo = async () => {
   if (!vueloAModificar) return;
 
@@ -115,9 +137,14 @@ const handleModificarVuelo = async () => {
 const handleBuscarVuelo = async (id: string) => {
   try {
     const vuelo = await getVueloById(id);
-    setVueloAModificar(vuelo);
+
+    // Actualiza solo los campos que no son flightId
+    setVueloAModificar(prev => ({
+      ...prev,
+      ...vuelo, // Sobrescribe con los datos del vuelo
+      flightId: prev.flightId // Mantén el flightId ingresado
+    }));
   } catch (error) {
-    console.error('Error fetching vuelo:');
     alert('Error al buscar el vuelo');
   }
 };
