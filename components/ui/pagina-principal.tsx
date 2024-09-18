@@ -14,7 +14,7 @@ export default function MainPage() {
       {/* Menú de Navegación debajo del título */}
       <NavigationMenu>
         <Menubar className="bg-white text-black p-4 flex space-x-4 border border-black rounded-lg mt-5">
-          <MenubarMenu>
+          <MenubarMenu bg-white text-black>
             <MenubarTrigger className="text-lg font-semibold">Gestión de vuelos</MenubarTrigger>
             <MenubarContent>
               <MenubarItem>
