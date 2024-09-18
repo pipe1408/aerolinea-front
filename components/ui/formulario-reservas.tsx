@@ -177,8 +177,9 @@ export default function FormularioReservas() {
                   <Combobox sendValueToParent={handleReceiveValue}/>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex flex-col space-y-2">
                 <Button type="submit" className="w-full">Submit Reservation</Button>
+                <Button variant="ghost" className="w-full">Volver</Button>
               </CardFooter>
             </form>
           </Card>
@@ -232,10 +233,12 @@ export default function FormularioReservas() {
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
               <Button className="w-full">Ver Vuelos</Button>
-              <div className="w-full flex justify-between">
-                <Button variant="outline">Modificar pasajero</Button>
-                <Button variant="destructive">Eliminar pasajero</Button>
+              <Button variant="outline" className="w-full">Modificar pasajero</Button>
+              <div className="w-full flex justify-between space-x-2">
+                <Button variant="destructive" className="w-full">Cancelar Reserva</Button>
+                <Button variant="destructive" className="w-full">Eliminar pasajero</Button>
               </div>
+              <Button variant="ghost" className="w-full">Volver</Button>
             </CardFooter>
           </Card>
         </TabsContent>
