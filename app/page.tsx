@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import AccordionNav from '@/components/ui/accordion-nav';
 import PaginaPrincipal from "@/components/ui/pagina-principal";
-import page from "./Vuelos/page";
+import page from "./Vuelos/oldpage";
 
 
 export default function MainPage() {

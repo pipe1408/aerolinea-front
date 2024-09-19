@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { actualizarVuelo, eliminarVuelo, getVueloById, getVuelos, guardarVuelo } from "../Services/vueloService";
+import { getVuelos, actualizarVuelo, eliminarVuelo, getVueloById, guardarVuelo } from "../Services/vueloService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
-import axios from "axios";
 
 
 type Vuelo = {
@@ -28,10 +27,6 @@ type Vuelo = {
   fecha: string;
   asientosLibres: number;
 };
-
-
-
-
 
 const CrearVuelo = () => {
   const [vuelos, setVuelos] = useState<Vuelo[]>([]);
@@ -51,40 +46,47 @@ const CrearVuelo = () => {
   const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); // Control del popover de modificar vuelo
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // Estado para manejar el formulario de nuevo vuelo
-  const [nuevoVuelo, setNuevoVuelo] = React.useState({
-    vueloId: '',
-    origen: '',
-    destino: '',
-    fecha: '',
-    asientosDisponibles: 0
-  });
-  
-  const [vueloAModificar, setVueloAModificar] = useState<Vuelo>({
-    flightId: '',
-    origen: '',
-    destino: '',
-    fecha: '',
-    asientosLibres: 0
-  });
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNuevoVuelo(prevState => ({ ...prevState, [name]: value }));
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const fetchVuelos = async () => {
+      try {
+        const data = await getVuelos();
+        setVuelos(data);
+        setFilteredVuelos(data);
+      } catch (error) {
+        setError("Error al cargar los vuelos");
+      }
+    };
+
+    fetchVuelos();
+  }, []);
+
+  useEffect(() => {
+    const filtered = vuelos.filter((vuelo) =>
+      vuelo.flightId.toLowerCase().includes(filter.toLowerCase())
+    );
+    setFilteredVuelos(filtered);
+    setCurrentPage(1);
+  }, [filter, vuelos]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredVuelos.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredVuelos.length / itemsPerPage);
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const handleGuardarVuelo = async () => {
-    try {
-      await guardarVuelo(nuevoVuelo);
-      alert('Vuelo guardado exitosamente');
-  
-      // Recargar la página después de guardar
-      window.location.reload();
-    } catch (error) {
-      alert('Error al guardar el vuelo');
-    }
-  };  
-  const [vueloIdEliminar, setVueloIdEliminar] = React.useState('');
+  type ColumnKey = keyof typeof visibleColumns;
+  const toggleColumnVisibility = (column: ColumnKey) => {
+    setVisibleColumns((prev) => ({ ...prev, [column]: !prev[column] }));
+  };
+
   const [vueloModificado, setVueloModificado] = useState<Vuelo>({
     flightId: "",
     origen: "",
@@ -92,6 +94,26 @@ const CrearVuelo = () => {
     fecha: "",
     asientosLibres: 0, 
   });
+  
+
+  const handlePopoverCreateToggle = () => {
+    setPopoverCreateOpen((prev) => !prev);
+    setPopoverDeleteOpen(false);
+    setPopoverModifyOpen(false);
+  };
+
+  const handlePopoverDeleteToggle = () => {
+    setPopoverDeleteOpen((prev) => !prev);
+    setPopoverCreateOpen(false);
+    setPopoverModifyOpen(false);
+  };
+
+  const handlePopoverModifyToggle = () => {
+    setPopoverModifyOpen((prev) => !prev);
+    setPopoverCreateOpen(false);
+    setPopoverDeleteOpen(false);
+  };
+  const [vueloIdEliminar, setVueloIdEliminar] = React.useState('');
 
   const handleEliminarVuelo = async () => {
     try {
@@ -121,82 +143,19 @@ const CrearVuelo = () => {
       }
     }
   };
+  const handleBuscarVuelo = async (id: string) => {
+    try {
+      const vuelo = await getVueloById(id);
   
-
-
-const handleBuscarVuelo = async (id: string) => {
-  try {
-    const vuelo = await getVueloById(id);
-
-    // Actualiza solo los campos que no son flightId
-    setVueloAModificar(prev => ({
-      ...prev,
-      ...vuelo, // Sobrescribe con los datos del vuelo
-      flightId: prev.flightId // Mantén el flightId ingresado
-    }));
-  } catch (error) {
-    alert('Error al buscar el vuelo');
-  }
-};
-
-  const itemsPerPage = 10;
-
-  useEffect(() => {
-    const fetchVuelos = async () => {
-      try {
-        const data = await getVuelos();
-        setVuelos(data);
-        setFilteredVuelos(data);
-      } catch (error) {
-        setError("Error al cargar los vuelos");
-      }
-    };
-
-    fetchVuelos();
-  }, []);
-
-  useEffect(() => {
-    const filtered = vuelos.filter((vuelo) =>
-      vuelo.flightId.toLowerCase().includes(filter.toLowerCase())
-    );
-    setFilteredVuelos(filtered);
-    setCurrentPage(1);
-  }, [filter, vuelos]);
-
-  
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredVuelos.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredVuelos.length / itemsPerPage);
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-  const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  type ColumnKey = keyof typeof visibleColumns;
-  const toggleColumnVisibility = (column: ColumnKey) => {
-    setVisibleColumns((prev) => ({ ...prev, [column]: !prev[column] }));
-  };
-
-  const handlePopoverCreateToggle = () => {
-    setPopoverCreateOpen((prev) => !prev);
-    setPopoverDeleteOpen(false);
-    setPopoverModifyOpen(false);
-  };
-
-  const handlePopoverDeleteToggle = () => {
-    setPopoverDeleteOpen((prev) => !prev);
-    setPopoverCreateOpen(false);
-    setPopoverModifyOpen(false);
-  };
-
-  const handlePopoverModifyToggle = () => {
-    setPopoverModifyOpen((prev) => !prev);
-    setPopoverCreateOpen(false);
-    setPopoverDeleteOpen(false);
+      // Actualiza solo los campos que no son flightId
+      setVueloAModificar(prev => ({
+        ...prev,
+        ...vuelo, // Sobrescribe con los datos del vuelo
+        flightId: prev.flightId // Mantén el flightId ingresado
+      }));
+    } catch (error) {
+      alert('Error al buscar el vuelo');
+    }
   };
 
   const handleModificarVuelo = async () => {
@@ -232,6 +191,10 @@ const handleBuscarVuelo = async (id: string) => {
       console.error("Error al modificar vuelo", error);
     }
   };
+  
+  
+  
+  
 
   return (
     <div className="flex align-center "style={{ marginLeft: "90px", marginTop: "60px"}}>
@@ -357,99 +320,45 @@ const handleBuscarVuelo = async (id: string) => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-40" style={{marginLeft: "30px", marginTop: "-70px", height:"500px"}}>
-  {/* Popover para crear un nuevo vuelo */}
-  <Popover>
-      <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg" style={{ height: '50px', width: '200px', marginTop: '-80px'}}>
-  Nuevo vuelo ▼
-</Button>
-</PopoverTrigger>
-<PopoverContent className="w-90">
-  <div className="grid gap-4">
-    <Label htmlFor="vueloId">Flight ID</Label>
-    <Input
-      id="vueloId"
-      type="text"
-      name="vueloId"
-      placeholder="Flight ID"
-      value={nuevoVuelo.vueloId}
-      onChange={handleInputChange}
-      required
-    />
-    <Label htmlFor="origen">Origen</Label>
-    <Input
-      id="origen"
-      type="text"
-      name="origen"
-      placeholder="Origen"
-      value={nuevoVuelo.origen}
-      onChange={handleInputChange}
-      required
-    />
-    <Label htmlFor="destino">Destino</Label>
-    <Input
-      id="destino"
-      type="text"
-      name="destino"
-      placeholder="Destino"
-      value={nuevoVuelo.destino}
-      onChange={handleInputChange}
-      required
-    />
-    <Label htmlFor="fecha">Fecha</Label>
-    <Input
-      id="fecha"
-      type="date"
-      name="fecha"
-      value={nuevoVuelo.fecha}
-      onChange={handleInputChange}
-      required
-    />
-    <Label htmlFor="asientosDisponibles">Asientos Disponibles</Label>
-    <Input
-      id="asientosDisponibles"
-      type="number"
-      name="asientosDisponibles"
-      placeholder="Asientos Disponibles"
-      value={nuevoVuelo.asientosDisponibles}
-      onChange={handleInputChange}
-      required
-    />
-    <Button className="mt-2" onClick={handleGuardarVuelo}>
-      Guardar
-    </Button>
+      <div className="flex flex-col justify-center items-center space-y-40" style={{ marginLeft: "30px", marginTop: "-70px"}}>
+  
+      <Popover>
+    <PopoverTrigger asChild>
+      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px" , border: "8px solid #5a90d2"}} >Nuevo vuelo ▼</Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-90 ">
+    <div className="grid gap-4">
+      <Label>Flight ID</Label>
+      <Input type="text" placeholder="Flight ID" />
+      <Label>Origen</Label>
+      <Input type="text" placeholder="Origen" />
+      <Label>Destino</Label>
+      <Input type="text" placeholder="Destino" />
+      <Label>Fecha</Label>
+      <Input type="date" />
+      <Label>Asientos Libres</Label>
+      <Input type="number" placeholder="Asientos Libres" />
+      <Button className="mt-2">Guardar</Button>
   </div>
 </PopoverContent>
   </Popover>
 
-  {/* Popover para eliminar un vuelo */}
+ 
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
-  <PopoverTrigger asChild>
-    <Button className="bg-white text-black shadow-lg" style={{height: "50px", width: "200px" }}>
-      Eliminar vuelo ▼
-    </Button>
-  </PopoverTrigger>
-  <PopoverContent className="w-90">
+    <PopoverTrigger asChild>
+      <Button className="bg-white text-black shadow-lg"style={{ height:"50px", width:"200px", border: "8px solid #5a90d2" }}>Eliminar vuelo ▼</Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-90">
     <div className="grid gap-4">
-      <Label htmlFor="vueloIdEliminar">Flight ID para eliminar</Label>
-      <Input
-        id="vueloIdEliminar"
-        type="text"
-        name="vueloIdEliminar"
-        placeholder="Flight ID"
-        value={vueloIdEliminar}
-        onChange={(e) => setVueloIdEliminar(e.target.value)}
-      />
-      <Button className="mt-2" onClick={handleEliminarVuelo}>
-        Eliminar
-      </Button>
+      <Label>Flight ID para eliminar</Label>
+      <Input type="text" placeholder="Flight ID" />
+      <Button className="mt-2">Eliminar</Button>
     </div>
-      </PopoverContent>
+</PopoverContent>
 
   </Popover>
 
-  {/* Popover para modificar un vuelo */}
+
   <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
   <PopoverTrigger asChild>
     <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "8px solid #5a90d2" }}>Modificar vuelo ▼</Button>
@@ -494,9 +403,12 @@ const handleBuscarVuelo = async (id: string) => {
     </div>
   </PopoverContent>
 </Popover>
+
 </div>
 </div>
 </div>
+
+
   );
 };
 
