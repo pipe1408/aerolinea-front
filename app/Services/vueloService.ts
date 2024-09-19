@@ -41,7 +41,7 @@ export const guardarVuelo = async (vuelo: any) => {
     throw error;
   }
 };
-export const eliminarVuelo = async (flightId: String) => {
+export const eliminarVuelo = async (flightId: string) => {
   try {
     const response = await axios.delete(`${API_URL}/borrar/${flightId}`);
     console.log("Hola");
