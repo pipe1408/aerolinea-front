@@ -162,24 +162,12 @@ export default function FormularioReservas() {
     const { passport, firstName, lastName } = formData;
 
     try {
-      const response = await fetch(`http://104.248.110.182/personas/actualizar`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          pasaporteId: passport,
-          firstName,
-          lastName
-        })
+      const response = await axios.put(`http://104.248.110.182/personas/actualizar`, {
+        pasaporteId: passport,
+        firstName,
+        lastName
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to modify passenger data");
-      }
-
-      const result = await response.json();
-      console.log("Passenger modified successfully:", result);
+      toast(`${JSON.stringify(response.data.mensaje)}`)
     } catch (error) {
       console.error("Error modifying passenger:", error);
     }
