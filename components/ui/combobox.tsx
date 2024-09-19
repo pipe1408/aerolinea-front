@@ -25,7 +25,11 @@ interface Vuelo {
     label: string;
 }
 
-export function Combobox({ sendValueToParent }: { sendValueToParent: (value: string) => void }) {
+interface ComboboxProps {
+  sendValueToParent: (value: string) => void;
+}
+
+export function Combobox({ sendValueToParent }: ComboboxProps) {
     const [vuelos, setVuelos] = useState<Vuelo[]>([]);
     const fetchFlights = async () => {
         try {

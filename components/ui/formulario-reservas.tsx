@@ -109,7 +109,6 @@ export default function FormularioReservas() {
       })
       console.log('Second POST request successful')
       toast(`${JSON.stringify(secondResponse.data.mensaje)}`)
-
     } catch (error) {
       console.error('Error submitting form:', error)
     }
@@ -117,12 +116,54 @@ export default function FormularioReservas() {
     console.log("Form submitted", formData)
   }
 
+  const wipeForm = () => {
+    setFormData({
+      ticketId: "",
+      passport: "",
+      firstName: "",
+      lastName: "",
+      flightId: ""
+    });
+  }
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData({ ...formData, ticketId: value });
+
+    if (value) {
+      try {
+        const response = await fetch(`http://104.248.110.182/reservas/find/${value}`);
+        const data = await response.json();
+
+        if (data) {
+          setFormData({
+            ticketId: data.ticketId,
+            passport: data.passport.passportId,
+            firstName: data.passport.firstName,
+            lastName: data.passport.lastName,
+            flightId: data.flight.flightId
+          });
+        } else {
+          setFormData({
+            ticketId: value,
+            passport: "",
+            firstName: "",
+            lastName: "",
+            flightId: ""
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching ticket data:", error);
+      }
+    }
+  };
+
   return (
     <div className="flex justify-center items-center m-4">
       <Tabs defaultValue="agregar" className="w-[350px]">
         <TabsList className="w-full">
-          <TabsTrigger className="w-full" value="agregar">Agregar</TabsTrigger>
-          <TabsTrigger className="w-full" value="consultar">Consultar</TabsTrigger>
+          <TabsTrigger className="w-full" value="agregar" onClick={wipeForm}>Agregar</TabsTrigger>
+          <TabsTrigger className="w-full" value="consultar" onClick={wipeForm}>Consultar</TabsTrigger>
         </TabsList>
         <TabsContent value="agregar">
           <Card>
@@ -195,9 +236,10 @@ export default function FormularioReservas() {
                 <Input 
                   id="ticketId" 
                   placeholder="Enter ticket ID" 
-                  required 
+                  required
+                  type="number" 
                   value={formData.ticketId}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="space-y-2">
@@ -229,6 +271,16 @@ export default function FormularioReservas() {
                   value={formData.lastName}
                   onChange={handleChange}
                 />
+              </div>
+              <div className="mt-6">
+                <Input 
+                      id="flightInput" 
+                      placeholder="Vuelo" 
+                      required 
+                      disabled
+                      value={formData.flightId}
+                      onChange={handleChange}
+                    />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
