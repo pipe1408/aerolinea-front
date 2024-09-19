@@ -7,19 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
-import axios from "axios";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import PersonasTable from "@/components/ui/tabla-personas";
 
 
 type Vuelo = {
@@ -48,6 +40,7 @@ const CrearVuelo = () => {
   const [popoverDeleteOpen, setPopoverDeleteOpen] = useState(false); // Control del popover de eliminar vuelo
   const [popoverModifyOpen, setPopoverModifyOpen] = useState(false); // Control del popover de modificar vuelo
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedVuelo, setSelectedVuelo] = useState<Vuelo | null>(null);
 
   // Estado para manejar el formulario de nuevo vuelo
   const [nuevoVuelo, setNuevoVuelo] = React.useState({
@@ -322,7 +315,11 @@ const handleBuscarVuelo = async (id: string) => {
                 <TableBody>
                   {currentItems.length > 0 ? (
                     currentItems.map((vuelo) => (
-                      <TableRow key={vuelo.flightId}>
+                      <TableRow 
+                        key={vuelo.flightId} 
+                        onClick={() => setSelectedVuelo(vuelo)}
+                        className="cursor-pointer hover:bg-gray-100"
+                      >
                         {visibleColumns.flightId && <TableCell>{vuelo.flightId}</TableCell>}
                         {visibleColumns.origen && <TableCell>{vuelo.origen}</TableCell>}
                         {visibleColumns.destino && <TableCell>{vuelo.destino}</TableCell>}
@@ -508,6 +505,14 @@ const handleBuscarVuelo = async (id: string) => {
 </Link>
 </div>
 </div>
+<Dialog open={!!selectedVuelo} onOpenChange={() => setSelectedVuelo(null)}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Manifiesto de Pasajeros</DialogTitle>
+    </DialogHeader>
+    <PersonasTable flightId={selectedVuelo?.flightId || ''}/>
+  </DialogContent>
+</Dialog>
 </div>
   );
 };
