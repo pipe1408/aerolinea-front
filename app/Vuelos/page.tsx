@@ -30,9 +30,6 @@ type Vuelo = {
 };
 
 
-
-
-
 const CrearVuelo = () => {
   const [vuelos, setVuelos] = useState<Vuelo[]>([]);
   const [filteredVuelos, setFilteredVuelos] = useState<Vuelo[]>([]);
@@ -83,15 +80,8 @@ const CrearVuelo = () => {
     } catch (error) {
       alert('Error al guardar el vuelo');
     }
-  };  
+  };
   const [vueloIdEliminar, setVueloIdEliminar] = React.useState('');
-  const [vueloModificado, setVueloModificado] = useState<Vuelo>({
-    flightId: "",
-    origen: "",
-    destino: "",
-    fecha: "",
-    asientosLibres: 0, 
-  });
 
   const handleEliminarVuelo = async () => {
     try {
@@ -111,16 +101,24 @@ const CrearVuelo = () => {
       // Actualiza la página después de eliminar
       window.location.reload();
     } catch (error: any) {
-      if (error.response && error.response.status === 404) {
+      // Manejar el caso de que el vuelo tenga pasajeros y no pueda ser eliminado
+      if (error.response && error.response.status === 500) {
+        // Mostramos un mensaje claro para el usuario
+        alert('El vuelo no puede ser eliminado porque ya tiene pasajeros asignados.');
+      } else if (error.response && error.response.status === 404) {
         // Si la API devuelve un 404, informa que el vuelo no existe
         alert('El vuelo no existe');
       } else {
         // Maneja otros tipos de errores
         console.error('Error al eliminar el vuelo:', error);
-        alert('Error al eliminar el vuelo');
+        alert('Error inesperado al eliminar el vuelo');
       }
+  
+      // Recargar la página para evitar un estado inconsistente
+      window.location.reload();
     }
   };
+  
   
 
 
@@ -128,6 +126,7 @@ const handleBuscarVuelo = async (id: string) => {
   try {
     const vuelo = await getVueloById(id);
 
+    
     // Actualiza solo los campos que no son flightId
     setVueloAModificar(prev => ({
       ...prev,
@@ -180,6 +179,15 @@ const handleBuscarVuelo = async (id: string) => {
   const toggleColumnVisibility = (column: ColumnKey) => {
     setVisibleColumns((prev) => ({ ...prev, [column]: !prev[column] }));
   };
+
+  const [vueloModificado, setVueloModificado] = useState<Vuelo>({
+    flightId: "",
+    origen: "",
+    destino: "",
+    fecha: "",
+    asientosLibres: 0, 
+  });
+
 
   const handlePopoverCreateToggle = () => {
     setPopoverCreateOpen((prev) => !prev);
@@ -357,11 +365,11 @@ const handleBuscarVuelo = async (id: string) => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-40" style={{marginLeft: "30px", marginTop: "-70px", height:"500px"}}>
-  {/* Popover para crear un nuevo vuelo */}
+      <div className="flex flex-col justify-center items-center space-y-40" style={{marginLeft: "30px", marginTop: "-80px", height:"500px"}}>
+  
   <Popover>
       <PopoverTrigger asChild>
-      <Button className="bg-white text-black shadow-lg" style={{ height: '50px', width: '200px', marginTop: '-80px'}}>
+      <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "3px solid black" }}>
   Nuevo vuelo ▼
 </Button>
 </PopoverTrigger>
@@ -423,10 +431,9 @@ const handleBuscarVuelo = async (id: string) => {
 </PopoverContent>
   </Popover>
 
-  {/* Popover para eliminar un vuelo */}
   <Popover open={popoverDeleteOpen} onOpenChange={handlePopoverDeleteToggle}>
   <PopoverTrigger asChild>
-    <Button className="bg-white text-black shadow-lg" style={{height: "50px", width: "200px" }}>
+    <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "3px solid black" }}>
       Eliminar vuelo ▼
     </Button>
   </PopoverTrigger>
@@ -449,10 +456,9 @@ const handleBuscarVuelo = async (id: string) => {
 
   </Popover>
 
-  {/* Popover para modificar un vuelo */}
   <Popover open={popoverModifyOpen} onOpenChange={handlePopoverModifyToggle}>
   <PopoverTrigger asChild>
-    <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "8px solid #5a90d2" }}>Modificar vuelo ▼</Button>
+    <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "3px solid black" }}>Modificar vuelo ▼</Button>
   </PopoverTrigger>
   <PopoverContent className="w-90">
     <div className="grid gap-4">
@@ -504,4 +510,3 @@ const handleBuscarVuelo = async (id: string) => {
 
 
 export default CrearVuelo;
-
