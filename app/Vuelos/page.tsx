@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import PersonasTable from "@/components/ui/tabla-personas";
+import { toast, Toaster } from "sonner";
 
 
 type Vuelo = {
@@ -135,6 +136,7 @@ const handleBuscarVuelo = async (id: string) => {
   const itemsPerPage = 10;
 
   useEffect(() => {
+    toast.info("Seleccione un vuelo para ver la lista de pasajeros")
     const fetchVuelos = async () => {
       try {
         const data = await getVuelos();
@@ -513,6 +515,7 @@ const handleBuscarVuelo = async (id: string) => {
     <PersonasTable flightId={selectedVuelo?.flightId || ''}/>
   </DialogContent>
 </Dialog>
+<Toaster/>
 </div>
   );
 };
