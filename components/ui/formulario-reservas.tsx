@@ -158,6 +158,33 @@ export default function FormularioReservas() {
     }
   };
 
+  const handleModifyPassenger = async () => {
+    const { passport, firstName, lastName } = formData;
+
+    try {
+      const response = await fetch(`http://104.248.110.182/personas/actualizar`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          pasaporteId: passport,
+          firstName,
+          lastName
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to modify passenger data");
+      }
+
+      const result = await response.json();
+      console.log("Passenger modified successfully:", result);
+    } catch (error) {
+      console.error("Error modifying passenger:", error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center m-4">
       <Tabs defaultValue="agregar" className="w-[350px]">
@@ -257,7 +284,6 @@ export default function FormularioReservas() {
                 <Input 
                   id="firstName" 
                   placeholder="Enter first name" 
-                  disabled 
                   value={formData.firstName}
                   onChange={handleChange}
                 />
@@ -266,8 +292,7 @@ export default function FormularioReservas() {
                 <Label htmlFor="lastName">Last Name</Label>
                 <Input 
                   id="lastName" 
-                  placeholder="Enter last name" 
-                  disabled 
+                  placeholder="Enter last name"  
                   value={formData.lastName}
                   onChange={handleChange}
                 />
@@ -285,7 +310,7 @@ export default function FormularioReservas() {
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
               <Button className="w-full">Ver Vuelos</Button>
-              <Button variant="outline" className="w-full">Modificar pasajero</Button>
+              <Button variant="outline" className="w-full" onClick={handleModifyPassenger}>Modificar pasajero</Button>
               <div className="w-full flex justify-between space-x-2">
                 <Button variant="destructive" className="w-full">Cancelar Reserva</Button>
                 <Button variant="destructive" className="w-full">Eliminar pasajero</Button>
