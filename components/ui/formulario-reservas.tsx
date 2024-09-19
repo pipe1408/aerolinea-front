@@ -9,6 +9,20 @@ import { useState } from "react"
 import { toast, Toaster } from "sonner"
 import { Combobox } from "./combobox"
 import axios from "axios"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import ReservationTable from "./tabla-reservas"
+import Link from "next/link"
+
+
 
 export default function FormularioReservas() {
   const [formData, setFormData] = useState({
@@ -19,9 +33,10 @@ export default function FormularioReservas() {
     flightId: ""
   })
 
-  const [fieldsDisabled, setFieldsDisabled] = useState({
+  const [elementsDisabled, setElementsDisabled] = useState({
     firstName: true,
-    lastName: true
+    lastName: true,
+    getFlights: true
   })
 
   const handleReceiveValue = (value:string) => {
@@ -42,12 +57,12 @@ export default function FormularioReservas() {
     if (id === 'passport') {
       
       if (value.trim() === "") {
-        // Disable fields when passport is empty
-        setFieldsDisabled({
+        setElementsDisabled(prevData => ({
+          ...prevData,
           firstName: true,
-          lastName: true
-        })
-        // Clear firstName and lastName fields
+          lastName: true,
+          getFlights: true
+        }))
         setFormData(prevData => ({
           ...prevData,
           firstName: "",
@@ -64,15 +79,18 @@ export default function FormularioReservas() {
               lastName: lastName || prevData.lastName
             }))
   
-            setFieldsDisabled({
+            setElementsDisabled({
               firstName: true,
-              lastName: true
+              lastName: true,
+              getFlights: false
             })
           } else {
-            setFieldsDisabled({
+            setElementsDisabled(prevData => ({
+              ...prevData,
               firstName: false,
-              lastName: false
-            })
+              lastName: false,
+              getFlights: true
+            }))
   
             setFormData(prevData => ({
               ...prevData,
@@ -100,7 +118,9 @@ export default function FormularioReservas() {
         lastName: formData.lastName,
       })
       console.log('First POST request successful')
-      toast(`${JSON.stringify(firstResponse.data.mensaje)}`)
+      if (firstResponse.data.successful) {
+        toast(`${JSON.stringify(firstResponse.data.mensaje)}`)
+      }
 
       // Execute the second POST request
       const secondResponse = await axios.post('http://104.248.110.182/reservas/guardar', {
@@ -109,7 +129,9 @@ export default function FormularioReservas() {
       })
       console.log('Second POST request successful')
       toast(`${JSON.stringify(secondResponse.data.mensaje)}`)
-
+      if (secondResponse.data.successful) {
+        getLatestReserva(formData.passport)
+      }
     } catch (error) {
       console.error('Error submitting form:', error)
     }
@@ -117,12 +139,114 @@ export default function FormularioReservas() {
     console.log("Form submitted", formData)
   }
 
+  const wipeForm = () => {
+    setFormData({
+      ticketId: "",
+      passport: "",
+      firstName: "",
+      lastName: "",
+      flightId: ""
+    });
+  }
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData({ ...formData, ticketId: value });
+
+    if (value) {
+      try {
+        const response = await fetch(`http://104.248.110.182/reservas/find/${value}`);
+        const data = await response.json();
+
+        if (data) {
+          setFormData({
+            ticketId: data.ticketId,
+            passport: data.passport.passportId,
+            firstName: data.passport.firstName,
+            lastName: data.passport.lastName,
+            flightId: data.flight.flightId
+          });
+        } else {
+          setFormData({
+            ticketId: value,
+            passport: "",
+            firstName: "",
+            lastName: "",
+            flightId: ""
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching ticket data:", error);
+      }
+    }
+  };
+
+  const handleModifyPassenger = async () => {
+    const { passport, firstName, lastName } = formData;
+
+    try {
+      const response = await axios.put(`http://104.248.110.182/personas/actualizar`, {
+        pasaporteId: passport,
+        firstName,
+        lastName
+      });
+      toast(`${JSON.stringify(response.data.mensaje)}`)
+    } catch (error) {
+      console.error("Error modifying passenger:", error);
+    }
+  };
+
+  async function handleDeletePassenger(): Promise<void> {
+    const { passport } = formData;
+
+    try {
+      const response = await axios.delete(`http://104.248.110.182/personas/borrar/${passport}`);
+      
+      if (response.data.successful) {
+        wipeForm()
+      }
+      toast(`${response.data.mensaje}`)
+    } catch (error) {
+      toast("El pasajero tiene una o más reservas activas")
+      console.error("Error deleting passenger:", error);
+    }
+  }
+
+  async function getLatestReserva(passport: string) {
+    try {
+      const response = await axios.get(`http://104.248.110.182/reservas/find-persona/${passport}`);
+      const data = response.data;
+  
+      if (Array.isArray(data) && data.length > 0) {
+        const latestElement = data[data.length - 1];
+        toast(`Número de tiquete: ${latestElement.ticketId}`);
+      } else {
+        console.log('No data found');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  
+
+  async function handleCancelReserva(): Promise<void> {
+    const { ticketId } = formData;
+
+    try {
+      const response = await axios.delete(`http://104.248.110.182/reservas/borrar/${ticketId}`);
+      toast(`${response.data.mensaje}`)
+      wipeForm()
+    } catch (error) {
+      console.error("Error deleting reserva:", error);
+    }
+  }
+
   return (
     <div className="flex justify-center items-center m-4">
       <Tabs defaultValue="agregar" className="w-[350px]">
         <TabsList className="w-full">
-          <TabsTrigger className="w-full" value="agregar">Agregar</TabsTrigger>
-          <TabsTrigger className="w-full" value="consultar">Consultar</TabsTrigger>
+          <TabsTrigger className="w-full" value="agregar" onClick={wipeForm}>Agregar</TabsTrigger>
+          <TabsTrigger className="w-full" value="consultar" onClick={wipeForm}>Consultar</TabsTrigger>
         </TabsList>
         <TabsContent value="agregar">
           <Card>
@@ -157,7 +281,7 @@ export default function FormularioReservas() {
                     id="firstName" 
                     placeholder="Enter first name" 
                     required 
-                    disabled={fieldsDisabled.firstName}
+                    disabled={elementsDisabled.firstName}
                     value={formData.firstName}
                     onChange={handleChange}
                   />
@@ -168,7 +292,7 @@ export default function FormularioReservas() {
                     id="lastName" 
                     placeholder="Enter last name" 
                     required 
-                    disabled={fieldsDisabled.lastName}
+                    disabled={elementsDisabled.lastName}
                     value={formData.lastName}
                     onChange={handleChange}
                   />
@@ -177,8 +301,11 @@ export default function FormularioReservas() {
                   <Combobox sendValueToParent={handleReceiveValue}/>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex flex-col space-y-2">
                 <Button type="submit" className="w-full">Submit Reservation</Button>
+                <Link href = "/" passHref>
+                  <Button variant="ghost" className="w-full">Volver</Button>
+                </Link>
               </CardFooter>
             </form>
           </Card>
@@ -194,9 +321,10 @@ export default function FormularioReservas() {
                 <Input 
                   id="ticketId" 
                   placeholder="Enter ticket ID" 
-                  required 
+                  required
+                  type="number" 
                   value={formData.ticketId}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="space-y-2">
@@ -204,7 +332,7 @@ export default function FormularioReservas() {
                 <Input 
                   id="passport" 
                   placeholder="Enter passport number" 
-                  disabled 
+                  required 
                   value={formData.passport}
                   onChange={handleChange}
                 />
@@ -214,7 +342,6 @@ export default function FormularioReservas() {
                 <Input 
                   id="firstName" 
                   placeholder="Enter first name" 
-                  disabled 
                   value={formData.firstName}
                   onChange={handleChange}
                 />
@@ -223,19 +350,39 @@ export default function FormularioReservas() {
                 <Label htmlFor="lastName">Last Name</Label>
                 <Input 
                   id="lastName" 
-                  placeholder="Enter last name" 
-                  disabled 
+                  placeholder="Enter last name"  
                   value={formData.lastName}
                   onChange={handleChange}
                 />
               </div>
+              <div className="mt-6">
+                <Input 
+                      id="flightInput" 
+                      placeholder="Vuelo" 
+                      required 
+                      disabled
+                      value={formData.flightId}
+                      onChange={handleChange}
+                    />
+              </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
-              <Button className="w-full">Ver Vuelos</Button>
-              <div className="w-full flex justify-between">
-                <Button variant="outline">Modificar pasajero</Button>
-                <Button variant="destructive">Eliminar pasajero</Button>
+              <Dialog>
+                <DialogTrigger className="w-full" disabled={elementsDisabled.getFlights}>
+                  <Button className="w-full" disabled={elementsDisabled.getFlights}>Ver Reservas</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <ReservationTable passportId={formData.passport}/>
+                </DialogContent>
+              </Dialog>
+              <Button variant="outline" className="w-full" onClick={handleModifyPassenger}>Modificar pasajero</Button>
+              <div className="w-full flex justify-between space-x-2">
+                <Button variant="destructive" className="w-full" onClick={handleCancelReserva}>Cancelar Reserva</Button>
+                <Button variant="destructive" className="w-full" onClick={handleDeletePassenger}>Eliminar pasajero</Button>
               </div>
+              <Link href = "/" passHref>
+                <Button variant="ghost" className="w-full">Volver</Button>
+              </Link>
             </CardFooter>
           </Card>
         </TabsContent>

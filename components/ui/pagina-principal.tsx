@@ -15,24 +15,25 @@ export default function MainPage() {
       <NavigationMenu>
         <Menubar className="bg-white text-black p-4 flex space-x-4 border border-black rounded-lg mt-5">
           <MenubarMenu bg-white text-black>
-            <MenubarTrigger className="text-lg font-semibold">vuelos</MenubarTrigger>
+            <MenubarTrigger className="text-lg font-semibold">Vuelos</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>
-                <Link href="/Vuelos" passHref>
-                  <MenubarShortcut className="text-sm">Gestion de vuelos</MenubarShortcut>
-                </Link>
-              </MenubarItem>
+            <Link href="/Vuelos" passHref>
+                <MenubarItem>
+                  <MenubarShortcut className="text-sm">Gestión de vuelos</MenubarShortcut>
+                </MenubarItem>
+              </Link>
             </MenubarContent>
           </MenubarMenu>
 
           <MenubarMenu>
             <MenubarTrigger className="text-lg font-semibold">Reservas</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>
-                <Link href="/Reservas" passHref>
-                  <MenubarShortcut className="text-sm">Realizar nueva Reserva</MenubarShortcut>
-                </Link>
-              </MenubarItem>
+              
+              <Link href="/Reservas" passHref>
+                <MenubarItem>
+                  <MenubarShortcut className="text-sm">Gestión de reservas</MenubarShortcut>
+                </MenubarItem>
+              </Link>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
