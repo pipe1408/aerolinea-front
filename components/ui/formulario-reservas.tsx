@@ -10,6 +10,17 @@ import { toast, Toaster } from "sonner"
 import { Combobox } from "./combobox"
 import axios from "axios"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import ReservationTable from "./tabla-reservas"
+
 
 
 export default function FormularioReservas() {
@@ -49,6 +60,7 @@ export default function FormularioReservas() {
           ...prevData,
           firstName: true,
           lastName: true,
+          getFlights: true
         }))
         setFormData(prevData => ({
           ...prevData,
@@ -357,13 +369,7 @@ export default function FormularioReservas() {
                   <Button className="w-full" disabled={elementsDisabled.getFlights}>Ver Reservas</Button>
                 </DialogTrigger>
                 <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Reservas del pasajero</DialogTitle>
-                    <DialogDescription>
-                      This action cannot be undone. This will permanently delete your account
-                      and remove your data from our servers.
-                    </DialogDescription>
-                  </DialogHeader>
+                  <ReservationTable passportId={formData.passport}/>
                 </DialogContent>
               </Dialog>
               <Button variant="outline" className="w-full" onClick={handleModifyPassenger}>Modificar pasajero</Button>
