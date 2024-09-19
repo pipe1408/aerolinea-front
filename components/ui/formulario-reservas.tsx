@@ -100,7 +100,9 @@ export default function FormularioReservas() {
         lastName: formData.lastName,
       })
       console.log('First POST request successful')
-      toast(`${JSON.stringify(firstResponse.data.mensaje)}`)
+      if (firstResponse.data.successful) {
+        toast(`${JSON.stringify(firstResponse.data.mensaje)}`)
+      }
 
       // Execute the second POST request
       const secondResponse = await axios.post('http://104.248.110.182/reservas/guardar', {
@@ -109,6 +111,9 @@ export default function FormularioReservas() {
       })
       console.log('Second POST request successful')
       toast(`${JSON.stringify(secondResponse.data.mensaje)}`)
+      if (secondResponse.data.successful) {
+        getLatestReserva(formData.passport)
+      }
     } catch (error) {
       console.error('Error submitting form:', error)
     }
@@ -172,6 +177,51 @@ export default function FormularioReservas() {
       console.error("Error modifying passenger:", error);
     }
   };
+
+  async function handleDeletePassenger(): Promise<void> {
+    const { passport } = formData;
+
+    try {
+      const response = await axios.delete(`http://104.248.110.182/personas/borrar/${passport}`);
+      
+      if (response.data.successful) {
+        wipeForm()
+      }
+      toast(`${response.data.mensaje}`)
+    } catch (error) {
+      toast("El pasajero tiene una o más reservas activas")
+      console.error("Error deleting passenger:", error);
+    }
+  }
+
+  async function getLatestReserva(passport: string) {
+    try {
+      const response = await axios.get(`http://104.248.110.182/reservas/find-persona/${passport}`);
+      const data = response.data;
+  
+      if (Array.isArray(data) && data.length > 0) {
+        const latestElement = data[data.length - 1];
+        toast(`Número de tiquete: ${latestElement.ticketId}`);
+      } else {
+        console.log('No data found');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  
+
+  async function handleCancelReserva(): Promise<void> {
+    const { ticketId } = formData;
+
+    try {
+      const response = await axios.delete(`http://104.248.110.182/reservas/borrar/${ticketId}`);
+      toast(`${response.data.mensaje}`)
+      wipeForm()
+    } catch (error) {
+      console.error("Error deleting reserva:", error);
+    }
+  }
 
   return (
     <div className="flex justify-center items-center m-4">
@@ -262,7 +312,7 @@ export default function FormularioReservas() {
                 <Input 
                   id="passport" 
                   placeholder="Enter passport number" 
-                  disabled 
+                  required 
                   value={formData.passport}
                   onChange={handleChange}
                 />
@@ -300,8 +350,8 @@ export default function FormularioReservas() {
               <Button className="w-full">Ver Vuelos</Button>
               <Button variant="outline" className="w-full" onClick={handleModifyPassenger}>Modificar pasajero</Button>
               <div className="w-full flex justify-between space-x-2">
-                <Button variant="destructive" className="w-full">Cancelar Reserva</Button>
-                <Button variant="destructive" className="w-full">Eliminar pasajero</Button>
+                <Button variant="destructive" className="w-full" onClick={handleCancelReserva}>Cancelar Reserva</Button>
+                <Button variant="destructive" className="w-full" onClick={handleDeletePassenger}>Eliminar pasajero</Button>
               </div>
               <Button variant="ghost" className="w-full">Volver</Button>
             </CardFooter>
