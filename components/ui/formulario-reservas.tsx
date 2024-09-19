@@ -9,6 +9,8 @@ import { useState } from "react"
 import { toast, Toaster } from "sonner"
 import { Combobox } from "./combobox"
 import axios from "axios"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+
 
 export default function FormularioReservas() {
   const [formData, setFormData] = useState({
@@ -19,9 +21,10 @@ export default function FormularioReservas() {
     flightId: ""
   })
 
-  const [fieldsDisabled, setFieldsDisabled] = useState({
+  const [elementsDisabled, setElementsDisabled] = useState({
     firstName: true,
-    lastName: true
+    lastName: true,
+    getFlights: true
   })
 
   const handleReceiveValue = (value:string) => {
@@ -42,12 +45,11 @@ export default function FormularioReservas() {
     if (id === 'passport') {
       
       if (value.trim() === "") {
-        // Disable fields when passport is empty
-        setFieldsDisabled({
+        setElementsDisabled(prevData => ({
+          ...prevData,
           firstName: true,
-          lastName: true
-        })
-        // Clear firstName and lastName fields
+          lastName: true,
+        }))
         setFormData(prevData => ({
           ...prevData,
           firstName: "",
@@ -64,15 +66,18 @@ export default function FormularioReservas() {
               lastName: lastName || prevData.lastName
             }))
   
-            setFieldsDisabled({
+            setElementsDisabled({
               firstName: true,
-              lastName: true
+              lastName: true,
+              getFlights: false
             })
           } else {
-            setFieldsDisabled({
+            setElementsDisabled(prevData => ({
+              ...prevData,
               firstName: false,
-              lastName: false
-            })
+              lastName: false,
+              getFlights: true
+            }))
   
             setFormData(prevData => ({
               ...prevData,
@@ -263,7 +268,7 @@ export default function FormularioReservas() {
                     id="firstName" 
                     placeholder="Enter first name" 
                     required 
-                    disabled={fieldsDisabled.firstName}
+                    disabled={elementsDisabled.firstName}
                     value={formData.firstName}
                     onChange={handleChange}
                   />
@@ -274,7 +279,7 @@ export default function FormularioReservas() {
                     id="lastName" 
                     placeholder="Enter last name" 
                     required 
-                    disabled={fieldsDisabled.lastName}
+                    disabled={elementsDisabled.lastName}
                     value={formData.lastName}
                     onChange={handleChange}
                   />
@@ -347,7 +352,20 @@ export default function FormularioReservas() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
-              <Button className="w-full">Ver Vuelos</Button>
+              <Dialog>
+                <DialogTrigger className="w-full" disabled={elementsDisabled.getFlights}>
+                  <Button className="w-full" disabled={elementsDisabled.getFlights}>Ver Reservas</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Reservas del pasajero</DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone. This will permanently delete your account
+                      and remove your data from our servers.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
               <Button variant="outline" className="w-full" onClick={handleModifyPassenger}>Modificar pasajero</Button>
               <div className="w-full flex justify-between space-x-2">
                 <Button variant="destructive" className="w-full" onClick={handleCancelReserva}>Cancelar Reserva</Button>
