@@ -19,6 +19,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
 import axios from "axios";
+import Link from "next/link";
 
 
 type Vuelo = {
@@ -500,6 +501,11 @@ const handleBuscarVuelo = async (id: string) => {
     </div>
   </PopoverContent>
 </Popover>
+<Link href = "/" passHref>
+  <Button className="bg-white text-black shadow-lg" style={{ height: "50px", width: "200px", border: "3px solid black" }}>
+    Volver
+  </Button>
+</Link>
 </div>
 </div>
 </div>
