@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import ReservationTable from "./tabla-reservas"
+import Link from "next/link"
 
 
 
@@ -302,7 +303,9 @@ export default function FormularioReservas() {
               </CardContent>
               <CardFooter className="flex flex-col space-y-2">
                 <Button type="submit" className="w-full">Submit Reservation</Button>
-                <Button variant="ghost" className="w-full">Volver</Button>
+                <Link href = "/" passHref>
+                  <Button variant="ghost" className="w-full">Volver</Button>
+                </Link>
               </CardFooter>
             </form>
           </Card>
@@ -377,7 +380,9 @@ export default function FormularioReservas() {
                 <Button variant="destructive" className="w-full" onClick={handleCancelReserva}>Cancelar Reserva</Button>
                 <Button variant="destructive" className="w-full" onClick={handleDeletePassenger}>Eliminar pasajero</Button>
               </div>
-              <Button variant="ghost" className="w-full">Volver</Button>
+              <Link href = "/" passHref>
+                <Button variant="ghost" className="w-full">Volver</Button>
+              </Link>
             </CardFooter>
           </Card>
         </TabsContent>
