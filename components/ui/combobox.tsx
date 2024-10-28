@@ -33,7 +33,7 @@ export function Combobox({ sendValueToParent }: ComboboxProps) {
     const [vuelos, setVuelos] = useState<Vuelo[]>([]);
     const fetchFlights = async () => {
         try {
-        const response = await fetch('http://104.248.110.182/vuelos/get'); // Replace with your API URL
+        const response = await fetch('https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/vuelos/get'); // Replace with your API URL
         const data = await response.json(); // Assuming the response is JSON
         const transformedData = data.map((flight: any) => ({
             value: flight.flightId,   // Using flightID for both value and label

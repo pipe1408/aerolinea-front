@@ -70,7 +70,7 @@ export default function FormularioReservas() {
         }))
       } else{
         try {
-          const response = await axios.get(`http://104.248.110.182/personas/find/${value}`)
+          const response = await axios.get(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/personas/find/${value}`)
           if (response.data) {
             const { firstName, lastName } = response.data
             setFormData(prevData => ({
@@ -112,7 +112,7 @@ export default function FormularioReservas() {
 
     try {
       // Execute the first POST request
-      const firstResponse = await axios.post('http://104.248.110.182/personas/guardar', {
+      const firstResponse = await axios.post('https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/personas/guardar', {
         pasaporteId: formData.passport,
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -123,7 +123,7 @@ export default function FormularioReservas() {
       }
 
       // Execute the second POST request
-      const secondResponse = await axios.post('http://104.248.110.182/reservas/guardar', {
+      const secondResponse = await axios.post('https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/reservas/guardar', {
         vueloId: formData.flightId,
         pasajeroId: formData.passport,
       })
@@ -155,7 +155,7 @@ export default function FormularioReservas() {
 
     if (value) {
       try {
-        const response = await fetch(`http://104.248.110.182/reservas/find/${value}`);
+        const response = await fetch(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/reservas/find/${value}`);
         const data = await response.json();
 
         if (data) {
@@ -185,7 +185,7 @@ export default function FormularioReservas() {
     const { passport, firstName, lastName } = formData;
 
     try {
-      const response = await axios.put(`http://104.248.110.182/personas/actualizar`, {
+      const response = await axios.put(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/personas/actualizar`, {
         pasaporteId: passport,
         firstName,
         lastName
@@ -200,7 +200,7 @@ export default function FormularioReservas() {
     const { passport } = formData;
 
     try {
-      const response = await axios.delete(`http://104.248.110.182/personas/borrar/${passport}`);
+      const response = await axios.delete(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/personas/borrar/${passport}`);
       
       if (response.data.successful) {
         wipeForm()
@@ -214,7 +214,7 @@ export default function FormularioReservas() {
 
   async function getLatestReserva(passport: string) {
     try {
-      const response = await axios.get(`http://104.248.110.182/reservas/find-persona/${passport}`);
+      const response = await axios.get(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/reservas/find-persona/${passport}`);
       const data = response.data;
   
       if (Array.isArray(data) && data.length > 0) {
@@ -233,7 +233,7 @@ export default function FormularioReservas() {
     const { ticketId } = formData;
 
     try {
-      const response = await axios.delete(`http://104.248.110.182/reservas/borrar/${ticketId}`);
+      const response = await axios.delete(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/reservas/borrar/${ticketId}`);
       toast(`${response.data.mensaje}`)
       wipeForm()
     } catch (error) {

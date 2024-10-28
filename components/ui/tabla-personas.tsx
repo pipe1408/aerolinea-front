@@ -38,7 +38,7 @@ function PersonasTable({ flightId }: { flightId: string }) {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get(`http://104.248.110.182/reservas/find-vuelo/${flightId}`);
+        const response = await axios.get(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/find-vuelo/${flightId}`);
         setReservations(response.data);
       } catch (error) {
         console.error('Error fetching pasajeros:', error);

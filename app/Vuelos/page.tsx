@@ -205,7 +205,7 @@ const handleBuscarVuelo = async (id: string) => {
 
   const handleModificarVuelo = async () => {
     try {
-      const response = await fetch("http://104.248.110.182/vuelos/actualizar", {
+      const response = await fetch("https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/vuelos/actualizar", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
