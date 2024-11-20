@@ -205,7 +205,7 @@ const handleBuscarVuelo = async (id: string) => {
 
   const handleModificarVuelo = async () => {
     try {
-      const response = await fetch("http://104.248.110.182/vuelos/actualizar", {
+      const response = await fetch("https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/vuelos/actualizar", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -238,7 +238,7 @@ const handleBuscarVuelo = async (id: string) => {
   };
 
   return (
-    <div className="flex align-center "style={{ marginLeft: "90px", marginTop: "60px"}}>
+    <div className="flex align-center "style={{ marginLeft: "90px"}}>
       <div className="ml-10 mr-10 w-full max-w-[60%] h-full"style={{ marginLeft: "90px", marginTop: "15px"}} >
         <h2>Lista de Vuelos</h2>
         {error ? (
@@ -365,7 +365,7 @@ const handleBuscarVuelo = async (id: string) => {
       </div>
       <div><Separator className="h-full w-px bg-gray-300 m-0" /></div>
       <div style={{marginTop: "155px"}}>
-      <div className="flex flex-col justify-center items-center space-y-40" style={{marginLeft: "30px", marginTop: "-80px", height:"500px"}}>
+      <div className="flex flex-col justify-center items-center space-y-20" style={{marginLeft: "30px", marginTop: "-80px", height:"500px"}}>
   
   <Popover>
       <PopoverTrigger asChild>

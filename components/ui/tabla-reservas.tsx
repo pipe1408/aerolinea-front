@@ -38,7 +38,7 @@ function ReservationTable({ passportId }: { passportId: string }) {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get(`http://104.248.110.182/reservas/find-persona/${passportId}`);
+        const response = await axios.get(`https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/reservas/find-persona/${passportId}`);
         setReservations(response.data);
       } catch (error) {
         console.error('Error fetching reservations:', error);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Configuración de la URL base de tu API
-const API_URL = 'http://104.248.110.182/vuelos'; // Ajusta el puerto según tu configuración
+const API_URL = 'https://arquitectura-aeropuerto-back-146516897953.us-central1.run.app/vuelos'; // Ajusta el puerto según tu configuración
 
 // Función para obtener todos los vuelos
 export const getVuelos = async () => {

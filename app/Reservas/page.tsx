@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getPersonas } from "../Services/personaService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import FormularioReservas from "@/components/ui/formulario-reservas";
+import { toast } from "sonner";
 
 // Definición del tipo Persona
 type Persona = {
@@ -28,6 +29,7 @@ const CrearPersona = () => {
 
   // Cargar personas cuando se monta el componente
   useEffect(() => {
+    toast.info("Ingrese un número de pasaporte para buscar un pasajero o registrar uno nuevo")
     const fetchPersonas = async () => {
       try {
         const data = await getPersonas();
