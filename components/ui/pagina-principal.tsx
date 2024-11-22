@@ -53,8 +53,20 @@ export default function MainPage() {
               </Link>
             </MenubarContent>
           </MenubarMenu>
+
+          <MenubarMenu>
+            <MenubarTrigger className="text-lg font-semibold">Actualizaciones</MenubarTrigger>
+            <MenubarContent>
+              <Link href="/flight-updates" passHref>
+                <MenubarItem>
+                  <MenubarShortcut className="text-sm">View Updates</MenubarShortcut>
+                </MenubarItem>
+              </Link>
+            </MenubarContent>
+          </MenubarMenu>
         </Menubar>
       </NavigationMenu>
     </div>
   );
 }
+
