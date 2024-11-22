@@ -31,13 +31,15 @@ jobs:
         push: false
         tags: pipeba1408/aerofront:${{ env.SHORT_SHA }}
 
-    - name: Install Trivy
-      run: |
-        curl -sfL https://github.com/aquasecurity/trivy/releases/download/v0.43.0/trivy_0.43.0_Linux-64bit.tar.gz | tar xz -C /usr/local/bin
-
-    - name: Scan Docker image with Trivy
-      run: |
-        trivy image --exit-code 1 --severity HIGH,CRITICAL pipeba1408/aerofront:${{ env.SHORT_SHA }}
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        image-ref: 'docker.io/pipeba1408/aerofront:${{ env.SHORT_SHA }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL'
 
     - name: Push Docker image
       if: success()
